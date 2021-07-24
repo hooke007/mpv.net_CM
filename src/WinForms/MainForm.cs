@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Windows.Forms.Integration;
 
 using static mpvnet.Native;
 using static mpvnet.Global;
@@ -16,6 +17,7 @@ namespace mpvnet
 {
     public partial class MainForm : Form
     {
+        public ElementHost CommandPaletteHost { get; set; }
         public static MainForm Instance { get; set; }
         public static IntPtr Hwnd { get; set; }
         public new ContextMenuStripEx ContextMenu { get; set; }
@@ -23,11 +25,10 @@ namespace mpvnet
 
         int LastCursorChanged;
         int LastCycleFullscreen;
-        int LastAppCommand;
         int TaskbarButtonCreatedMessage;
         int ShownTickCount;
 
-        Taskbar  Taskbar;
+        Taskbar Taskbar;
         bool WasMaximized;
 
         public MainForm()
@@ -40,30 +41,31 @@ namespace mpvnet
                 Hwnd = Handle;
                 Core.Init();
 
-                Core.Shutdown += Shutdown;
-                Core.VideoSizeChanged += VideoSizeChanged;
-                Core.ScaleWindow += ScaleWindow;
-                Core.WindowScale += WindowScale;
-                Core.FileLoaded += FileLoaded;
-                Core.Idle += Idle;
+                Core.Shutdown += Core_Shutdown;
+                Core.VideoSizeChanged += Core_VideoSizeChanged;
+                Core.ScaleWindow += Core_ScaleWindow;
+                Core.WindowScale += Core_WindowScale;
+                Core.FileLoaded += Core_FileLoaded;
+                Core.Idle += Core_Idle;
                 Core.Seek += () => UpdateProgressBar();
 
-                Core.observe_property("window-maximized", PropChangeWindowMaximized);
-                Core.observe_property("window-minimized", PropChangeWindowMinimized);
-              
-                Core.observe_property_bool("pause", PropChangePause);
-                Core.observe_property_bool("fullscreen", PropChangeFullscreen);
-                Core.observe_property_bool("ontop", PropChangeOnTop);
-                Core.observe_property_bool("border", PropChangeBorder);
+                Core.ObserveProperty("window-maximized", PropChangeWindowMaximized);
+                Core.ObserveProperty("window-minimized", PropChangeWindowMinimized);
 
-                Core.observe_property_string("sid", PropChangeSid);
-                Core.observe_property_string("aid", PropChangeAid);
-                Core.observe_property_string("vid", PropChangeVid);
+                Core.ObservePropertyBool("border", PropChangeBorder);
+                Core.ObservePropertyBool("fullscreen", PropChangeFullscreen);
+                Core.ObservePropertyBool("keepaspect-window", value => Core.KeepaspectWindow = value);
+                Core.ObservePropertyBool("ontop", PropChangeOnTop);
+                Core.ObservePropertyBool("pause", PropChangePause);
 
-                Core.observe_property_string("title", PropChangeTitle);
+                Core.ObservePropertyString("sid", PropChangeSid);
+                Core.ObservePropertyString("aid", PropChangeAid);
+                Core.ObservePropertyString("vid", PropChangeVid);
 
-                Core.observe_property_int("edition", PropChangeEdition);
-                
+                Core.ObservePropertyString("title", PropChangeTitle);
+
+                Core.ObservePropertyInt("edition", PropChangeEdition);
+
                 if (Core.GPUAPI != "vulkan")
                     Core.ProcessCommandLine(false);
 
@@ -71,7 +73,7 @@ namespace mpvnet
                 Application.ThreadException += (sender, e) => App.ShowException(e.Exception);
 
                 TaskbarButtonCreatedMessage = RegisterWindowMessage("TaskbarButtonCreated");
-                
+
                 ContextMenu = new ContextMenuStripEx(components);
                 ContextMenu.Opened += ContextMenu_Opened;
                 ContextMenu.Opening += ContextMenu_Opening;
@@ -97,7 +99,7 @@ namespace mpvnet
                     FormBorderStyle = FormBorderStyle.None;
 
                 Point pos = App.Settings.WindowPosition;
-                
+
                 if ((pos.X != 0 || pos.Y != 0) && App.RememberWindowPosition)
                 {
                     Left = pos.X - Width / 2;
@@ -129,7 +131,7 @@ namespace mpvnet
             }
         }
 
-        void ScaleWindow(float scale) {
+        void Core_ScaleWindow(float scale) {
             BeginInvoke(new Action(() => {
                 int w = (int)(ClientSize.Width * scale);
                 int h = (int)Math.Ceiling(w * Core.VideoSize.Height / (double)Core.VideoSize.Width);
@@ -137,28 +139,28 @@ namespace mpvnet
             }));
         }
 
-        void WindowScale(float scale)
+        void Core_WindowScale(float scale)
         {
             BeginInvoke(new Action(() => {
                 SetSize(
                     (int)(Core.VideoSize.Width * scale),
                     (int)Math.Ceiling(Core.VideoSize.Height * scale),
                     Screen.FromControl(this), false);
-                Core.command($"show-text \"window-scale {scale.ToString(CultureInfo.InvariantCulture)}\"");
+                Core.Command($"show-text \"window-scale {scale.ToString(CultureInfo.InvariantCulture)}\"");
             }));
         }
 
         public MenuItem FindMenuItem(string text) => FindMenuItem(text, ContextMenu.Items);
 
-        void Shutdown() => BeginInvoke(new Action(() => Close()));
+        void Core_Shutdown() => BeginInvoke(new Action(() => Close()));
 
-        void Idle() => SetTitle();
+        void Core_Idle() => SetTitle();
 
         bool WasShown() => ShownTickCount != 0 && Environment.TickCount > ShownTickCount + 500;
 
         void CM_Popup(object sender, EventArgs e) => CursorHelp.Show();
 
-        void VideoSizeChanged() => BeginInvoke(new Action(() => SetFormPosAndSize()));
+        void Core_VideoSizeChanged() => BeginInvoke(new Action(() => SetFormPosAndSize()));
 
         void PropChangeFullscreen(bool value) => BeginInvoke(new Action(() => CycleFullscreen(value)));
 
@@ -166,9 +168,11 @@ namespace mpvnet
 
         bool IsFullscreen => WindowState == FormWindowState.Maximized && FormBorderStyle == FormBorderStyle.None;
 
+        bool IsCommandPaletteVissible() => CommandPaletteHost != null && CommandPaletteHost.Visible;
+
         bool IsMouseInOSC()
         {
-            Point pos = PointToClient(Control.MousePosition);
+            Point pos = PointToClient(MousePosition);
             float top = 0;
 
             if (FormBorderStyle == FormBorderStyle.None)
@@ -195,8 +199,8 @@ namespace mpvnet
                     foreach (MediaTrack track in vidTracks)
                     {
                         MenuItem mi = new MenuItem(track.Text);
-                        mi.Action = () => Core.commandv("set", "vid", track.ID.ToString());
-                        mi.Checked = Core.Vid == track.ID.ToString();
+                        mi.Action = () => Core.CommandV("set", "vid", track.ID.ToString());
+                        mi.Checked = Core.VID == track.ID.ToString();
                         trackMenuItem.DropDownItems.Add(mi);
                     }
 
@@ -206,8 +210,8 @@ namespace mpvnet
                     foreach (MediaTrack track in audTracks)
                     {
                         MenuItem mi = new MenuItem(track.Text);
-                        mi.Action = () => Core.commandv("set", "aid", track.ID.ToString());
-                        mi.Checked = Core.Aid == track.ID.ToString();
+                        mi.Action = () => Core.CommandV("set", "aid", track.ID.ToString());
+                        mi.Checked = Core.AID == track.ID.ToString();
                         trackMenuItem.DropDownItems.Add(mi);
                     }
 
@@ -217,16 +221,16 @@ namespace mpvnet
                     foreach (MediaTrack track in subTracks)
                     {
                         MenuItem mi = new MenuItem(track.Text);
-                        mi.Action = () => Core.commandv("set", "sid", track.ID.ToString());
-                        mi.Checked = Core.Sid == track.ID.ToString();
+                        mi.Action = () => Core.CommandV("set", "sid", track.ID.ToString());
+                        mi.Checked = Core.SID == track.ID.ToString();
                         trackMenuItem.DropDownItems.Add(mi);
                     }
 
                     if (subTracks.Length > 0)
                     {
                         MenuItem mi = new MenuItem("S: No subtitles");
-                        mi.Action = () => Core.commandv("set", "sid", "no");
-                        mi.Checked = Core.Sid == "no";
+                        mi.Action = () => Core.CommandV("set", "sid", "no");
+                        mi.Checked = Core.SID == "no";
                         trackMenuItem.DropDownItems.Add(mi);
                     }
 
@@ -236,7 +240,7 @@ namespace mpvnet
                     foreach (MediaTrack track in ediTracks)
                     {
                         MenuItem mi = new MenuItem(track.Text);
-                        mi.Action = () => Core.commandv("set", "edition", track.ID.ToString());
+                        mi.Action = () => Core.CommandV("set", "edition", track.ID.ToString());
                         mi.Checked = Core.Edition == track.ID;
                         trackMenuItem.DropDownItems.Add(mi);
                     }
@@ -255,7 +259,7 @@ namespace mpvnet
                     {
                         MenuItem mi = new MenuItem(pair.Key);
                         mi.ShortcutKeyDisplayString = TimeSpan.FromSeconds(pair.Value).ToString().Substring(0, 8) + "     ";
-                        mi.Action = () => Core.commandv("seek", pair.Value.ToString(CultureInfo.InvariantCulture), "absolute");
+                        mi.Action = () => Core.CommandV("seek", pair.Value.ToString(CultureInfo.InvariantCulture), "absolute");
                         chaptersMenuItem.DropDownItems.Add(mi);
                     }
                 }
@@ -269,7 +273,7 @@ namespace mpvnet
 
                 foreach (string path in App.Settings.RecentFiles)
                     MenuItem.Add(recent.DropDownItems, path, () => Core.LoadFiles(new[] { path }, true, Control.ModifierKeys.HasFlag(Keys.Control)));
-               
+
                 recent.DropDownItems.Add(new ToolStripSeparator());
                 MenuItem mi = new MenuItem("Clear List");
                 mi.Action = () => App.Settings.RecentFiles.Clear();
@@ -298,6 +302,38 @@ namespace mpvnet
                                 () => Core.SetBluRayTitle(item.Index));
                 }
             }
+
+            MenuItem profiles = FindMenuItem("Profile");
+
+            if (profiles != null)
+            {
+                profiles.DropDownItems.Clear();
+
+                foreach (string profile in ProfileNames)
+                    if (!profile.StartsWith("extension."))
+                        MenuItem.Add(profiles.DropDownItems, profile,
+                            () => {
+                                Core.CommandV("show-text", profile);
+                                Core.CommandV("apply-profile", profile);
+                            });
+            }
+        }
+
+        private string[] _ProfileNames;
+
+        public string[] ProfileNames {
+            get {
+                if (_ProfileNames == null)
+                {
+                    string[] ignore = { "builtin-pseudo-gui", "encoding", "libmpv", "pseudo-gui", "default" };
+                    string profileList = Core.GetPropertyString("profile-list");
+                    var json = profileList.FromJson<List<Dictionary<string, object>>>();
+                    _ProfileNames = json.Select(i => i["name"].ToString())
+                                        .Where(i => !ignore.Contains(i)).ToArray();
+                }
+
+                return _ProfileNames;
+            }
         }
 
         MenuItem FindMenuItem(string text, ToolStripItemCollection items)
@@ -312,7 +348,7 @@ namespace mpvnet
                     if (mi.DropDownItems.Count > 0)
                     {
                         MenuItem val = FindMenuItem(text, mi.DropDownItems);
-                        
+
                         if (val != null)
                             return val;
                     }
@@ -334,7 +370,7 @@ namespace mpvnet
                     return;
                 }
             }
-            
+
             Screen screen = Screen.FromControl(this);
             int autoFitHeight = Convert.ToInt32(screen.WorkingArea.Height * Core.Autofit);
 
@@ -344,7 +380,7 @@ namespace mpvnet
                 Core.VideoSize = new Size((int)(autoFitHeight * (16 / 9f)), autoFitHeight);
 
             Size videoSize = Core.VideoSize;
-            
+
             int height = videoSize.Height;
             int width  = videoSize.Width;
 
@@ -553,7 +589,6 @@ namespace mpvnet
                         FormBorderStyle = FormBorderStyle.None;                      
 
                     SetFormPosAndSize();
-                    SaveWindowProperties();
                 }
             }
         }
@@ -582,7 +617,7 @@ namespace mpvnet
 
                 MenuItem menuItem = ContextMenu.Add(item.Path.Replace("&", "&&"), () => {
                     try {
-                        Core.command(item.Command);
+                        Core.Command(item.Command);
                     } catch (Exception ex) {
                         Msg.ShowException(ex);
                     }
@@ -593,12 +628,12 @@ namespace mpvnet
             }
         }
 
-        void FileLoaded()
+        void Core_FileLoaded()
         {
-            string path = Core.get_property_string("path");
+            string path = Core.GetPropertyString("path");
 
             BeginInvoke(new Action(() => {
-                Text = Core.expand(Title);
+                Text = Core.Expand(Title);
 
                 int interval = (int)(Core.Duration.TotalMilliseconds / 100);
 
@@ -621,7 +656,13 @@ namespace mpvnet
                 App.Settings.RecentFiles.RemoveAt(App.RecentCount);
         }
 
-        void SetTitle() => BeginInvoke(new Action(() => Text = Core.expand(Title)));
+        void SetTitle() => BeginInvoke(new Action(() => Text = Core.Expand(Title)));
+
+        public void Voodoo()
+        {
+            Message m = new Message() { Msg = 0x0202 }; // WM_LBUTTONUP
+            SendMessage(Handle, m.Msg, m.WParam, m.LParam);
+        }
 
         void SaveWindowProperties()
         {
@@ -674,8 +715,6 @@ namespace mpvnet
 
         protected override void WndProc(ref Message m)
         {
-            //Debug.WriteLine(m);
-
             switch (m.Msg)
             {
                 case 0x100: // WM_KEYDOWN
@@ -690,13 +729,8 @@ namespace mpvnet
                 case 0x20e: // WM_MOUSEHWHEEL
                 case 0x20b: // WM_XBUTTONDOWN
                 case 0x20c: // WM_XBUTTONUP
-                    {
-                        bool skip = m.Msg == 0x100 && LastAppCommand != 0 &&
-                            (Environment.TickCount - LastAppCommand) < 1000;
-
-                        if (Core.WindowHandle != IntPtr.Zero && !skip)
-                            m.Result = SendMessage(Core.WindowHandle, m.Msg, m.WParam, m.LParam);
-                    }
+                    if (Core.WindowHandle != IntPtr.Zero)
+                        m.Result = SendMessage(Core.WindowHandle, m.Msg, m.WParam, m.LParam);
                     break;
                 case 0x319: // WM_APPCOMMAND
                     {
@@ -704,9 +738,8 @@ namespace mpvnet
 
                         if (value != null)
                         {
-                            Core.command("keypress " + value);
+                            Core.Command("keypress " + value);
                             m.Result = new IntPtr(1);
-                            LastAppCommand = Environment.TickCount;
                             return;
                         }
                     }
@@ -718,7 +751,7 @@ namespace mpvnet
                     if (Environment.TickCount - LastCycleFullscreen > 500)
                     {
                         Point pos = PointToClient(Cursor.Position);
-                        Core.command($"mouse {pos.X} {pos.Y}");
+                        Core.Command($"mouse {pos.X} {pos.Y}");
                     }
 
                     if (CursorHelp.IsPosDifferent(LastCursorPosition))
@@ -726,12 +759,12 @@ namespace mpvnet
                     break;
                 case 0x2a3: // WM_MOUSELEAVE
                     //osc won't auto hide after mouse left window in borderless mode
-                    Core.command($"mouse {ClientSize.Width / 2} {ClientSize.Height / 3}");
+                    Core.Command($"mouse {ClientSize.Width / 2} {ClientSize.Height / 3}");
                     break;
                 case 0x203: // WM_LBUTTONDBLCLK
                     {
                         Point pos = PointToClient(Cursor.Position);
-                        Core.command($"mouse {pos.X} {pos.Y} 0 double");
+                        Core.Command($"mouse {pos.X} {pos.Y} 0 double");
                     }
                     break;
                 case 0x02E0: // WM_DPICHANGED
@@ -744,6 +777,7 @@ namespace mpvnet
                     }
                     break;
                 case 0x0214: // WM_SIZING
+                    if (Core.KeepaspectWindow)
                     {
                         RECT rc = Marshal.PtrToStructure<RECT>(m.LParam);
                         RECT r = rc;
@@ -784,10 +818,10 @@ namespace mpvnet
                                 break;
                             case "queue":
                                 foreach (string file in args)
-                                    Core.commandv("loadfile", file, "append");
+                                    Core.CommandV("loadfile", file, "append");
                                 break;
                             case "command":
-                                Core.command(args[0]);
+                                Core.Command(args[0]);
                                 break;
                         }
 
@@ -816,7 +850,7 @@ namespace mpvnet
             }
             else if (Environment.TickCount - LastCursorChanged > 1500 &&
                 !IsMouseInOSC() && ClientRectangle.Contains(PointToClient(MousePosition)) &&
-                Form.ActiveForm == this && !ContextMenu.Visible)
+                ActiveForm == this && !ContextMenu.Visible && !IsCommandPaletteVissible())
 
                 CursorHelp.Hide();
         }
@@ -826,16 +860,16 @@ namespace mpvnet
         void UpdateProgressBar()
         {
             if (Core.TaskbarProgress && Taskbar != null)
-                Taskbar.SetValue(Core.get_property_number("time-pos"), Core.Duration.TotalSeconds);
+                Taskbar.SetValue(Core.GetPropertyDouble("time-pos"), Core.Duration.TotalSeconds);
         }
 
         void PropChangeOnTop(bool value) => BeginInvoke(new Action(() => TopMost = value));
 
-        void PropChangeAid(string value) => Core.Aid = value;
+        void PropChangeAid(string value) => Core.AID = value;
 
-        void PropChangeSid(string value) => Core.Sid = value;
+        void PropChangeSid(string value) => Core.SID = value;
 
-        void PropChangeVid(string value) => Core.Vid = value;
+        void PropChangeVid(string value) => Core.VID = value;
 
         void PropChangeTitle(string value) { Title = value; SetTitle(); }
         
@@ -848,7 +882,7 @@ namespace mpvnet
 
             BeginInvoke(new Action(() =>
             {
-                Core.WindowMaximized = Core.get_property_bool("window-maximized");
+                Core.WindowMaximized = Core.GetPropertyBool("window-maximized");
 
                 if (Core.WindowMaximized && WindowState != FormWindowState.Maximized)
                     WindowState = FormWindowState.Maximized;
@@ -864,7 +898,7 @@ namespace mpvnet
 
             BeginInvoke(new Action(() =>
             {
-                Core.WindowMinimized = Core.get_property_bool("window-minimized");
+                Core.WindowMinimized = Core.GetPropertyBool("window-minimized");
 
                 if (Core.WindowMinimized && WindowState != FormWindowState.Minimized)
                     WindowState = FormWindowState.Minimized;
@@ -913,8 +947,7 @@ namespace mpvnet
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);
-            Message m = new Message() { Msg = 0x0202 }; // WM_LBUTTONUP
-            SendMessage(Handle, m.Msg, m.WParam, m.LParam);
+            Voodoo();
         }
 
         protected override void OnShown(EventArgs e)
@@ -922,7 +955,7 @@ namespace mpvnet
             base.OnShown(e);
 
             if (WindowState == FormWindowState.Maximized)
-                Core.set_property_bool("window-maximized", true);
+                Core.SetPropertyBool("window-maximized", true);
 
             if (Core.GPUAPI == "vulkan")
                 Core.ProcessCommandLine(false);
@@ -938,15 +971,12 @@ namespace mpvnet
             App.RunTask(() => App.Extension = new Extension());
             CSharpScriptHost.ExecuteScriptsInFolder(Core.ConfigFolder + "scripts-cs");
             ShownTickCount = Environment.TickCount;
-
-            //if (Debugger.IsAttached)
-            //{
-            //}
         }
 
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
+            SaveWindowProperties();
 
             if (Core.IsLogoVisible)
                 Core.ShowLogo();
@@ -963,16 +993,16 @@ namespace mpvnet
             {
                 if (WindowState == FormWindowState.Minimized)
                 {
-                    Core.set_property_bool("window-minimized", true);
+                    Core.SetPropertyBool("window-minimized", true);
                 }
                 else if (WindowState == FormWindowState.Normal)
                 {
-                    Core.set_property_bool("window-maximized", false);
-                    Core.set_property_bool("window-minimized", false);
+                    Core.SetPropertyBool("window-maximized", false);
+                    Core.SetPropertyBool("window-minimized", false);
                 }
                 else if (WindowState == FormWindowState.Maximized)
                 {
-                    Core.set_property_bool("window-maximized", true);
+                    Core.SetPropertyBool("window-maximized", true);
                 }
             }
         }
@@ -980,10 +1010,9 @@ namespace mpvnet
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             base.OnFormClosing(e);
-            SaveWindowProperties();
 
             if (Core.IsQuitNeeded)
-                Core.commandv("quit");
+                Core.CommandV("quit");
 
             if (!Core.ShutdownAutoResetEvent.WaitOne(10000))
                 Msg.ShowError("Shutdown thread failed to complete within 10 seconds.");
@@ -1002,7 +1031,13 @@ namespace mpvnet
             }
 
             if (Width - e.Location.X < 10 && e.Location.Y < 10)
-                Core.commandv("quit");
+                Core.CommandV("quit");
+        }
+
+        protected override void OnMove(EventArgs e)
+        {
+            base.OnMove(e);
+            SaveWindowProperties();
         }
 
         protected override void OnDragEnter(DragEventArgs e)
@@ -1037,6 +1072,50 @@ namespace mpvnet
                 e.SuppressKeyPress = true;
 
             base.OnKeyDown(e);
+        }
+
+        protected override void OnLayout(LayoutEventArgs args)
+        {
+            base.OnLayout(args);
+            AdjustCommandPaletteLeftAndWidth();
+        }
+
+        public void ShowCommandPalette()
+        {
+            if (CommandPaletteHost == null)
+            {
+                CommandPaletteHost = new ElementHost();
+                AdjustCommandPaletteLeftAndWidth();
+                CommandPaletteHost.Child = CommandPalette.Instance;
+                CommandPalette.Instance.AdjustHeight();
+                Controls.Add(CommandPaletteHost);
+            }
+        }
+
+        public void HideCommandPalette()
+        {
+            if (CommandPaletteHost != null)
+            {
+                ActiveControl = null;
+                Controls.Remove(CommandPaletteHost);
+                CommandPaletteHost.Child = null;
+                CommandPaletteHost.Dispose();
+                CommandPaletteHost = null;
+                CommandPalette.Instance.SearchControl.SearchTextBox.Text = "";
+            }
+        }
+
+        void AdjustCommandPaletteLeftAndWidth()
+        {
+            if (CommandPaletteHost == null)
+                return;
+
+            CommandPaletteHost.Width = FontHeight * 25;
+
+            if (CommandPaletteHost.Width > ClientSize.Width)
+                CommandPaletteHost.Width = ClientSize.Width;
+
+            CommandPaletteHost.Left = (ClientSize.Width - CommandPaletteHost.Size.Width) / 2;
         }
     }
 }

@@ -2,6 +2,8 @@
 mpv.net manual
 ==============
 
+Other Languages: [简体中文](Manual_chs.md)
+
 Table of contents
 -----------------
 
@@ -60,9 +62,13 @@ Download
 Installation
 ------------
 
-mpv.net requires the .NET Framework 4.8 and Windows 7 or 10 and a modern graphics card.
+mpv.net requires the .NET Framework 4.8 and Windows 7 or higher and a modern graphics card.
 
 There is a setup exe and a portable zip file download.
+
+An old version should be uninstalled before installing a new version,
+it's generally not a good idea to install a new version on top of an old version,
+the setup don't enforce it because it's not easy to implement.
 
 For internet streaming youtube-dl must be downloaded and installed manually,
 meaning it must be located in the PATH environment variable or in the startup directory.
@@ -204,9 +210,8 @@ Adds files to the playlist, requires [--process-instance=single](#--process-inst
 
 #### --command=\<input command\>
 
-Sends a input command. Useful to control mpv.net from the command line, for instance
-to create global hotkeys with AutoHotkey, for that [process-instance=single](#--process-instancevalue)
-must be used. Spaces have to be escaped with quotes and quotes have to be escaped with double quotes.
+Sends a input command to a running mpv.net instance via command line, for instance
+to create global hotkeys with AutoHotkey. Requires [process-instance=single](#--process-instancevalue).
 
 ### Audio
 
@@ -368,6 +373,31 @@ Alternatively the Chrome/Firefox extension [Open With](../../../issues/119) can 
 ### Open with++
 
 [Open with++](https://github.com/stax76/OpenWithPlusPlus) can be used to extend the File Explorer context menu to get menu items for [Play with mpv.net](https://github.com/stax76/OpenWithPlusPlus#play-with-mpvnet) and [Add to mpv.net playlist](https://github.com/stax76/OpenWithPlusPlus#add-to-mpvnet-playlist).
+
+
+### Universal Remote Android app
+
+Universal Remote is Android remote control app which costs 5 €.
+
+https://www.unifiedremote.com
+
+https://play.google.com/store/apps/details?id=com.Relmtech.Remote
+
+https://play.google.com/store/apps/details?id=com.Relmtech.RemotePaid
+
+https://www.unifiedremote.com/tutorials/how-to-create-a-custom-keyboard-shortcuts-remote
+
+https://www.unifiedremote.com/tutorials/how-to-install-a-custom-remote
+
+[My config](./Universal%20Remote)
+
+Very useful is the Universal Remote File Browser feature.
+
+
+### One For All Contour URC1210 and FLIRC USB
+
+My primary remote control solution however is a One For All Contour URC1210
+using Philips code 0556 together with FLIRC USB (gen2).
 
 
 Scripting
@@ -554,10 +584,11 @@ The documentation of mpvs window features can be found here:
 https://mpv.io/manual/master/#window
 
 
-mpv.net has currently implemented the following window features:
+mpv.net has currently implemented the following window properties:
 
 - [border](https://mpv.io/manual/master/#options-border)
 - [fullscreen](https://mpv.io/manual/master/#options-fullscreen)
+- [keepaspect-window](https://mpv.io/manual/master/#options-keepaspect-window)
 - [ontop](https://mpv.io/manual/master/#options-ontop)
 - [screen](https://mpv.io/manual/master/#options-screen)
 - [title](https://mpv.io/manual/master/#options-title)
@@ -590,11 +621,17 @@ need an own implementation in mpv.net, so far implemented are:
 --version  
 
 
+### Scripting limitations (Lua and JavaScript)
+
+Script input bindings (mp.add_key_binding) are not direcly supported,
+the bindings must be defined explicitly in input.conf.
+
+
 ### mpv.net specific options
 
 Options that are specific to mpv.net can be found by entering _mpv.net_
-in the search field of the config editor, in the manual they are documented
-[here](#mpvnet-specific-options).
+in the search field of the config editor, in the mpv.net manual they are
+documented [here](#mpvnet-specific-options).
 
 mpv.net specific options are saved in the file mpvnet.conf and are just
 as mpv properties available on the command line.
@@ -611,15 +648,10 @@ The Extension implementation is based on the
 The main window is WinForms based because WinForms allows better libmpv integration
 compared to WPF, all other windows are WPF based.
 
-The config editor adds it's controls dynamically and uses
-[TOML](https://en.wikipedia.org/wiki/TOML) to define it's content.
-
-
 Third party components are:
 
 - [libmpv provides the core functionality](https://mpv.io/)
 - [MediaInfo](https://mediaarea.net/en/MediaInfo)
-- [Tommy, a single file TOML parser](https://github.com/dezhidki/Tommy)
 - [Everything, a fast file search service](https://www.voidtools.com)
 
 
@@ -1333,7 +1365,7 @@ Enables to set loop start and end points using the following command:
 
 Loops the current file infinitely using the following command:
 
-cycle-values loop-file "inf" "no"
+`cycle-values loop-file "inf" "no"`
 
 [cycle-values command](https://mpv.io/manual/master/#command-interface-cycle-values)
 

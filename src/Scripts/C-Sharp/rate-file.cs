@@ -62,20 +62,20 @@ class Script
     //handles keys defined in input.conf
     void ClientMessage(string[] args)
     {
-        if (args[0] != "rate-file")
+        if (args == null || args.Length != 2 || args[0] != "rate-file")
             return;
 
         int rating;
 
         if (int.TryParse(args[1], out rating))
         {
-            string path = Core.get_property_string("path");
+            string path = Core.GetPropertyString("path");
 
             if (!File.Exists(path))
                 return;
 
             Dic[path] = rating;
-            Core.commandv("show-text", "Rating: " + rating);
+            Core.CommandV("show-text", "Rating: " + rating);
         }
         else if (args[1] == "about")
             MessageBox.Show("This extension writes a rating to the filename of rated videos when mpv.net shuts down.",

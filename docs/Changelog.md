@@ -1,4 +1,33 @@
 
+5.4.9.2 Beta (2021-??-??)
+
+- Manual translated to simplified Chinese. (hooke007)
+- watch-later-options support added to conf editor. (hooke007)
+- Showing the playlist selects the currently played file/stream in the playlist.
+- Properties are shown in the command palette instead of the text editor
+  making it very easy to find a property and show/print its value.
+- Support for --keep-open=no.
+- Profile selection in the context menu.
+- Use defaults in case settings.xml fails loading (not reproducible).
+- libmpv shinchiro 2021-07-18
+
+
+5.4.9.1 Beta (2021-06-23)
+=========================
+
+- Fix exception using named pipes.
+- The mpv window property keepaspect-window was implemented.
+- Everything search removed to keep the core player lightweight,
+  it might come back as user script or extension.
+- The command palette is integrated into the main window.
+- Playlist is shown with the command palette and not using the OSD.
+- New media info command: `Ctrl+m script-message mpv.net show-media-info #menu: View > Show Media Info`
+- Context menu font render quality fix.
+- Context menu and `cycle-audio` command supports external audio and subtitle tracks.
+- Fix window size not being saved.
+- libmpv shinchiro 2021-06-20
+
+
 5.4.9.0 (2021-05-29)
 ====================
 

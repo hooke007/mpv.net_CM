@@ -17,7 +17,7 @@ namespace mpvnet
 {
     public partial class ConfWindow : Window
     {
-        List<SettingBase> SettingsDefinitions = Settings.LoadSettings(Properties.Resources.editor_toml);
+        List<SettingBase> SettingsDefinitions = Conf.LoadConf(Properties.Resources.editor_conf);
         List<ConfItem> ConfItems = new List<ConfItem>();
         public ObservableCollection<string> FilterStrings { get; } = new ObservableCollection<string>();
         string InitialContent;
@@ -35,9 +35,7 @@ namespace mpvnet
             FilterListBox.SelectedItem = SearchControl.Text.TrimEnd(':');
         }
 
-        public Theme Theme {
-            get => Theme.Current;
-        }
+        public Theme Theme => Theme.Current;
 
         void LoadSettings()
         {
@@ -75,10 +73,10 @@ namespace mpvnet
         {
             base.OnClosed(e);
             App.Settings.ConfigEditorSearch = SearchControl.Text;
-            
+
             if (InitialContent == GetCompareString())
                 return;
-            
+
             File.WriteAllText(Core.ConfPath, GetContent("mpv"));
             File.WriteAllText(App.ConfPath, GetContent("mpvnet"));
 
@@ -89,10 +87,10 @@ namespace mpvnet
                     if (item.File == "mpv")
                     {
                         Core.ProcessProperty(item.Name, item.Value);
-                        
+
                         try
                         {
-                            Core.set_property_string(item.Name, item.Value, true);
+                            Core.SetPropertyString(item.Name, item.Value, true);
                         }
                         catch (Exception ex)
                         {

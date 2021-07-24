@@ -46,10 +46,10 @@ namespace mpvnet
             {
                 string umod = parts[i].ToUpper();
 
-                if (umod == "ALT") mod |= KeyModifiers.Alt;
-                if (umod == "CTRL") mod |= KeyModifiers.Ctrl;
+                if (umod == "ALT")   mod |= KeyModifiers.Alt;
+                if (umod == "CTRL")  mod |= KeyModifiers.Ctrl;
                 if (umod == "SHIFT") mod |= KeyModifiers.Shift;
-                if (umod == "WIN") mod |= KeyModifiers.Win;
+                if (umod == "WIN")   mod |= KeyModifiers.Win;
             }
 
             key = parts[parts.Length - 1];
@@ -60,9 +60,6 @@ namespace mpvnet
 
                 int hi = result >> 8;
                 int lo = result & 0xFF;
-
-                if (lo == -1)
-                    return;
 
                 vk = lo;
 
@@ -89,7 +86,7 @@ namespace mpvnet
         public static void Execute(int id)
         {
             if (Commands.ContainsKey(id))
-                Core.command(Commands[id]);
+                Core.Command(Commands[id]);
         }
 
         static int mpv_to_VK(string value)

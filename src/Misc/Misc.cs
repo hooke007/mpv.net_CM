@@ -228,4 +228,27 @@ namespace mpvnet
             }
         }
     }
+
+    public class CommandPaletteItem
+    {
+        public string Text { get; set; } = "";
+        public string SecondaryText { get; set; } = "";
+        public Action Action { get; set; }
+    }
+
+    public class CommandPalette
+    {
+        public static CommandPaletteControl Instance { get; } = new CommandPaletteControl();
+
+        public static IEnumerable<CommandPaletteItem> GetItems()
+        {
+            return CommandItem.Items
+                .Where(i => i.Command != "")
+                .Select(i => new CommandPaletteItem() {
+                    Text = i.Display,
+                    SecondaryText = i.Input,
+                    Action = () => Core.Command(i.Command)
+                });
+        }
+    }
 }

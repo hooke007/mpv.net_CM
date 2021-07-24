@@ -12,6 +12,8 @@ namespace mpvnet
 {
     public static class App
     {
+        public static List<string> TempFiles { get; } = new List<string>();
+
         public static string ConfPath { get => Core.ConfigFolder + "mpvnet.conf"; }
         public static string ProcessInstance { get; set; } = "single";
         public static string DarkMode { get; set; } = "always";
@@ -21,7 +23,7 @@ namespace mpvnet
 
         public static bool RememberWindowPosition { get; set; }
         public static bool DebugMode { get; set; }
-        public static bool IsStartedFromTerminal { get; } = Environment.GetEnvironmentVariable("_started_from_console") == "yes";
+        public static bool IsTerminalAttached { get; } = Environment.GetEnvironmentVariable("_started_from_console") == "yes";
         public static bool RememberVolume { get; set; } = true;
         public static bool AutoLoadFolder { get; set; } = true;
         public static bool Queue { get; set; }
@@ -80,8 +82,8 @@ namespace mpvnet
 
             InitTheme();
 
-            Core.Shutdown += Shutdown;
-            Core.Initialized += Initialized;
+            Core.Shutdown += Core_Shutdown;
+            Core.Initialized += Core_Initialized;
         }
 
         public static void InitTheme()
@@ -118,13 +120,13 @@ namespace mpvnet
             get {
                 return "Copyright (C) 2000-2021 mpv.net/mpv/mplayer\n" +
                     $"mpv.net {Application.ProductVersion} ({File.GetLastWriteTime(Application.ExecutablePath).ToShortDateString()})\n" +
-                    $"{Core.get_property_string("mpv-version")} ({File.GetLastWriteTime(Folder.Startup + "mpv-1.dll").ToShortDateString()})\nffmpeg {Core.get_property_string("ffmpeg-version")}\nMIT License";
+                    $"{Core.GetPropertyString("mpv-version")} ({File.GetLastWriteTime(Folder.Startup + "mpv-1.dll").ToShortDateString()})\nffmpeg {Core.GetPropertyString("ffmpeg-version")}\nMIT License";
             }
         }
 
         public static void ShowException(object obj)
         {
-            if (IsStartedFromTerminal)
+            if (IsTerminalAttached)
                 Terminal.WriteError(obj.ToString());
             else
             {
@@ -135,9 +137,25 @@ namespace mpvnet
             }
         }
 
+        public static void InvokeOnMainThread(Action action) => MainForm.Instance.BeginInvoke(action);
+
+        public static void ShowInfo(string title, string msg = null)
+        {
+            if (IsTerminalAttached)
+            {
+                if (title != null)
+                    Terminal.Write(title);
+
+                if (msg != null)
+                    Terminal.Write(msg);
+            }
+            else
+                InvokeOnMainThread(() => Msg.ShowInfo(title, msg));
+        }
+
         public static void ShowError(string title, string msg = null)
         {
-            if (IsStartedFromTerminal)
+            if (IsTerminalAttached)
             {
                 if (title != null)
                     Terminal.WriteError(title);
@@ -146,24 +164,27 @@ namespace mpvnet
                     Terminal.WriteError(msg);
             }
             else
-                Msg.ShowError(title, msg);
+                InvokeOnMainThread(() => Msg.ShowError(title, msg));
         }
 
-        static void Initialized()
+        static void Core_Initialized()
         {
             if (RememberVolume)
             {
-                Core.set_property_int("volume", Settings.Volume);
-                Core.set_property_string("mute", Settings.Mute);
+                Core.SetPropertyInt("volume", Settings.Volume);
+                Core.SetPropertyString("mute", Settings.Mute);
             }
         }
 
-        static void Shutdown()
+        static void Core_Shutdown()
         {
-            Settings.Volume = Core.get_property_int("volume");
-            Settings.Mute = Core.get_property_string("mute");
+            Settings.Volume = Core.GetPropertyInt("volume");
+            Settings.Mute = Core.GetPropertyString("mute");
 
             SettingsManager.Save(Settings);
+
+            foreach (string file in TempFiles)
+                FileHelp.Delete(file);
         }
 
         static Dictionary<string, string> _Conf;

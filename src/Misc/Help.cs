@@ -2,7 +2,10 @@
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Windows.Forms;
 
 using Microsoft.Win32;
@@ -11,6 +14,46 @@ using static mpvnet.Global;
 
 namespace mpvnet
 {
+    public static class PathHelp
+    {
+        public static string GetFileName(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                return "";
+
+            if (path.Contains(Path.DirectorySeparatorChar))
+                return path.Substring(path.LastIndexOf(Path.DirectorySeparatorChar) + 1);
+
+            return path;
+        }
+    }
+
+    public static class StringHelp
+    {
+        public static string GetMD5Hash(string txt)
+        {
+            using (MD5 md5 = MD5.Create())
+            {
+                byte[] inputBuffer = Encoding.UTF8.GetBytes(txt);
+                byte[] hashBuffer = md5.ComputeHash(inputBuffer);
+                return BitConverter.ToString(md5.ComputeHash(inputBuffer)).Replace("-", "");
+            }
+        }
+    }
+
+    public static class FileHelp
+    {
+        public static void Delete(string path)
+        {
+            try {
+                if (File.Exists(path))
+                    File.Delete(path);
+            } catch (Exception ex) {
+                Terminal.WriteError("Failed to delete file:" + BR + path + BR + ex.Message);
+            }
+        }
+    }
+
     public static class ProcessHelp
     {
         public static void Execute(string file, string arguments = null)
@@ -84,7 +127,7 @@ namespace mpvnet
                     ''
                 }";
 
-            string json = Core.get_property_string("profile-list");
+            string json = Core.GetPropertyString("profile-list");
             return PowerShell.InvokeAndReturnString(code, "json", json).Trim();
         }
 
@@ -96,19 +139,19 @@ namespace mpvnet
                     $item.codec + ' - ' + $item.description
                 }";
 
-            string json = Core.get_property_string("decoder-list");
+            string json = Core.GetPropertyString("decoder-list");
             return PowerShell.InvokeAndReturnString(code, "json", json).Trim();
         }
 
         public static string GetProtocols()
         {
-            string list = Core.get_property_string("protocol-list");
+            string list = Core.GetPropertyString("protocol-list");
             return string.Join(BR, list.Split(',').OrderBy(a => a));
         }
 
         public static string GetDemuxers()
         {
-            string list = Core.get_property_string("demuxer-lavf-list");
+            string list = Core.GetPropertyString("demuxer-lavf-list");
             return string.Join(BR, list.Split(',').OrderBy(a => a));
         }
     }
