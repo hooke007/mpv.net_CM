@@ -32,10 +32,6 @@ mpvnet的 **libmpv内核** 可自行独立更新（替换文件目录中的 **mp
 
 mpv.conf尽量使用图形编辑器修改选项，自行编辑mpv.conf文件将会被图形编辑器内的选项强制覆盖。
 
-input编辑器被我屏蔽了  
-一 它实在没啥便利性不如直接资源管理器打开编辑文本  
-二 用上游仓库编译出来的有bug没法用，找不出问题在哪
-
 ## 下载
 
 右上方网址 或 我的个人主页 获取  
@@ -44,7 +40,21 @@ input编辑器被我屏蔽了
 
 ## 预览
 
-![](_Temp/mpvnet_CM.jpg)
+多功能右键菜单  
+![](_Temp/contextmenu.jpg)
+
+图形化编辑器  
+![](_Temp/editors.jpg)
+
+两种播放列表  
+![](_Temp/playlists.jpg)
+
+快捷指令和富媒体信息  
+![](_Temp/command&mediainfo.jpg)
+
+关于  
+![](_Temp/about.jpg)
+
 
 ## 极简的程序使用介绍
 
