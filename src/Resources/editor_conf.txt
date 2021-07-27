@@ -89,6 +89,16 @@ filter  = 功能
 help    = <整数> 初始窗口最大高度（百分比），默认：80
 
 [setting]
+name    = keepaspect-window
+file    = mpv
+default = yes
+filter  = 功能
+help    = 将窗口尺寸锁定为视频比例
+
+option  = yes
+option  = no
+
+[setting]
 name    = pause
 file    = mpv
 default = no
@@ -266,7 +276,7 @@ name    = icc-profile-auto
 file    = mpv
 default = no
 filter  = 视频
-help    = 色彩管理，自动使用系统当前的ICC文件
+help    = 色彩管理。自动使用系统当前的ICC文件
 
 option  = yes
 option  = no
@@ -277,25 +287,52 @@ file    = mpv
 filter  = 视频
 type    = string
 width   = 500
-help    = 色彩管理，（不使用自动时可）手动指定ICC文件
+help    = 色彩管理。（不使用自动时可）手动指定ICC文件
 
 [setting]
 name    = icc-3dlut-size
 file    = mpv
 filter  = 视频
-help    = <2-512> 色彩管理，根据ICC文件生成3dlut的每通道数量，默认：64x64x64\n（实际最大有效值由ICC视频卡伽马表的上限决定）
+help    = <2-512> 色彩管理。根据ICC文件生成3dlut的每通道数量，默认：64x64x64\n（实际最大有效值由ICC视频卡伽马表的上限决定）
+
+[setting]
+name    = icc-force-contrast
+file    = mpv
+filter  = 视频
+type    = string
+help    = <no|0-1000000|inf> 色彩管理。覆盖ICC文件内的静态对比度数据，默认no为不覆盖，oled可以设置为inf即无限（如果ICC中此项数据丢失则自动回落到1000）\n此项只影响BT.1886的内容显示
+
+[setting]
+name    = icc-intent
+file    = mpv
+default = 1
+filter  = 视频
+help    = 色彩管理。ICC的色彩转换映射意图
+
+option  = 0                   感知
+option  = 1                   相对色度
+option  = 2                   饱和度
+option  = 3                   绝对色度
 
 [setting]
 name    = target-prim
 file    = mpv
 default = auto
 filter  = 视频
-help    = 色彩管理，当不使用ICC文件时，视频将适应此色彩空间
+help    = 色彩管理。当不使用ICC文件时，视频将适应此色彩空间
 
 option  = auto                SRGB屏无需更改
 option  = adobe               Adobe RGB (1998)
 option  = bt.2020             能达到90%+覆盖的设备寥寥，谨慎选择
 option  = dci-p3              Display-P3也选这个
+
+[setting]
+name    = target-trc
+file    = mpv
+filter  = 视频
+type    = string
+help    = 色彩管理。当不使用ICC文件时，指定显示器的伽马，视频将适应此曲线\n通常无需改动默认值auto即推荐值
+url     = https://mpv.io/manual/master/#options-target-trc
 
 [setting]
 name    = video-sync
