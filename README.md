@@ -81,3 +81,8 @@ p.s.以下特例为菜单中的分隔线
 _   ignore   #menu: -
 ```
 用在哪一级的分隔线，注释就到哪一级
+
+## vo_placebo
+
+对libplacebo渲染器进行了实验性支持  
+使用此处的libmpv https://github.com/hooke007/mpv/releases/tag/beta 替换原版内核即可测试placebo的相关选项
