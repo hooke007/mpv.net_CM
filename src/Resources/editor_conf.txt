@@ -336,6 +336,7 @@ filter  = 视频
 help    = 色度还原算法(422/420→444)
 
 option  = bilinear            双线性（最快）
+option  = catmull_rom
 option  = spline36
 option  = jinc
 
@@ -350,12 +351,13 @@ option  = nearest             最邻近算法只擅长整数倍缩放
 option  = bilinear
 option  = spline36
 option  = lanczos
+option  = sinc
 option  = ewa_lanczossharp    类jinc
 
 [setting]
 name    = dscale
 file    = mpv
-default = auto
+default = 
 filter  = 视频
 help    = 图像缩小算法。\n不选任何选项即（默认）跟随--scale的算法
 
