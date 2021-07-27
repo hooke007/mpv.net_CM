@@ -1,10 +1,10 @@
 ﻿
 [dark]
 
-heading     = #3C8CC8
-foreground  = #DDDDDD
-foreground2 = #AAAAAA
-background  = #323232
+heading         = #3C8CC8
+foreground      = #DDDDDD
+foreground2     = #AAAAAA
+background      = #323232
 
 menu-foreground = #DDDDDD
 menu-background = #323232
@@ -15,13 +15,28 @@ menu-checked    = #5A5A5A
 
 [light]
 
-heading     = #0068B2
-foreground  = #000000
-foreground2 = #4C4C4C
-background  = #F7F7F7
+heading         = #0068B2
+foreground      = #000000
+foreground2     = #4C4C4C
+background      = #F7F7F7
 
 menu-foreground = #000000
 menu-background = #DFDFDF
 menu-highlight  = #BFBFBF
 menu-border     = #6A6A6A
 menu-checked    = #AAAAAA
+
+
+[bili]
+
+heading         = #FFC0CB
+foreground      = #FFFFFF
+foreground2     = #87CEFA
+background      = #1C1C1C
+
+menu-foreground = #FFFFFF
+menu-background = #000000
+menu-highlight  = #D3D3D3
+menu-border     = #FFFFFF
+menu-checked    = #808080
+
