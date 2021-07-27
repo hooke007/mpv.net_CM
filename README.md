@@ -85,4 +85,4 @@ _   ignore   #menu: -
 ## vo_placebo
 
 对libplacebo渲染器进行了实验性支持  
-使用此处的libmpv https://github.com/hooke007/mpv/releases/tag/beta 替换原版内核即可测试placebo的相关选项
+使用 [此处](https://github.com/hooke007/mpv/releases/tag/beta) 的libmpv替换原版内核即可测试placebo的相关选项
