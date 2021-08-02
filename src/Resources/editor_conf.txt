@@ -40,7 +40,15 @@ file    = mpv
 filter  = 基础
 type    = string
 width   = 500
-help    = 单显卡系统无需填写，双显卡笔记本留空自动选择系统或驱动指定的主渲染显卡，否则指定具体显卡名\n例：NVIDIA GeForce RTX 2070 Super 或 Intel(R) UHD Graphics
+help    = （当--gpu-api=d3d11时）单显卡系统无需填写，双显卡笔记本留空自动选择系统或驱动指定的主渲染显卡，否则应指定具体显卡名\n例：NVIDIA GeForce RTX 2070 Super 或 Intel(R) UHD Graphics
+
+[setting]
+name    = vulkan-device
+file    = mpv
+filter  = 基础
+type    = string
+width   = 500
+help    = （当--gpu-api=vulkan时）单显卡系统无需填写，双显卡笔记本留空自动选择系统或驱动指定的主渲染显卡，否则应指定具体显卡名\n例：NVIDIA GeForce RTX 2070 Super 或 Intel(R) UHD Graphics
 
 [setting]
 name    = log-file
