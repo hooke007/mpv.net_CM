@@ -567,7 +567,7 @@ help    = 混合字幕到视频帧上，字幕被限制在画面内
 
 option  = yes                 当--interpolation=yes时还会增强高级字幕的渲染性能
 option  = video               类似yes，字幕将先以原始分辨率绘制，后与视频共同缩放
-option  = no
+option  = no                  适用于HDR片源，避免检测字幕亮度
 
 [setting]
 name    = sub-ass-force-margins
@@ -746,21 +746,43 @@ filter  = HDR
 url     = https://mpv.io/manual/master/#options-tone-mapping-param
 
 [setting]
+name    = hdr-compute-peak
+file    = mpv
+default = auto
+filter  = HDR
+help    = 计算每帧的HDR峰值和帧平均亮度，它提供了基础的场景动态色调映射\n此功能需要支持OpenGL4.3及之后版本的显卡
+
+option  = auto
+option  = yes
+option  = no
+
+[setting]
+name    = gamut-clipping
+file    = mpv
+default = yes
+filter  = HDR
+help    = 对目标色域外颜色的饱和度进行降低，关闭可避免色度偏移\n使用ICC色彩管理则不受此选项影响
+
+option  = yes
+option  = no
+
+[setting]
 name    = tone-mapping-max-boost
 file    = mpv
 filter  = HDR
 help    = <1.0-10.0> 平均亮度的最大曝光倍数，默认：1.0\n增大此值可显示暗处隐藏的细节，过高会使暗处看起来不自然地明亮
 
 [setting]
-name    = hdr-compute-peak
+name    = tone-mapping-desaturate
 file    = mpv
-default = auto
 filter  = HDR
-help    = 计算每帧的HDR峰值和帧平均亮度，它提供了基础的场景动态色调映射
+help    = <0.0-1.0> 高光去饱和度，默认：0.75
 
-option  = auto
-option  = yes
-option  = no
+[setting]
+name    = tone-mapping-desaturate-exponent
+file    = mpv
+filter  = HDR
+help    = <0.0-20.0> 高光去饱和指数，默认：1.5
 
 
 
