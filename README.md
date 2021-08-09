@@ -34,8 +34,7 @@ mpv.conf尽量使用图形编辑器修改选项，自行编辑mpv.conf文件将�
 
 ## 下载
 
-右上方网址 或 我的个人主页 获取  
-[#网盘备份](https://hooke007.github.io/#%E7%BD%91%E7%9B%98%E5%A4%87%E4%BB%BD)
+见网页右侧 Release
 
 
 ## 预览
