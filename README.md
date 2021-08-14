@@ -34,8 +34,12 @@ mpv.conf尽量使用图形编辑器修改选项，自行编辑mpv.conf文件将�
 
 ## 下载
 
-见网页右侧 Release
+见网页右侧 [Releases](https://github.com/hooke007/mpv.net_CM/releases)
 
+
+## 反馈
+
+交流可以使用右上方网址。如果论坛无法进入可以在 [此处](https://github.com/hooke007/MPV_lazy/discussions) 发帖
 
 ## 预览
 
