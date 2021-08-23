@@ -13,6 +13,6 @@ input-ar-rate = 20
 keep-open = yes
 osd-duration = 2000
 osd-playing-msg = '${filename}'
-script-opts = osc-deadzonesize=1,osc-hidetimeout=1000,osc-scalewindowed=1.0,osc-seekbarstyle=knob,osc-title=对比[${contrast}]  亮度[${brightness}]  伽马[${gamma}]  饱和[${saturation}]  色相[${hue}]  音量[${volume}]  速度[${speed}]  列表[${playlist-pos-1}/${playlist-count}],console-scale=1
+script-opts = osc-deadzonesize=1,osc-hidetimeout=1000,osc-scalewindowed=1.0,osc-seekbarstyle=knob,osc-title=对比[${contrast}]  亮度[${brightness}]  伽马[${gamma}]  饱和[${saturation}]  色相[${hue}]  音量[${volume}]  速度[${speed}]  列表[${playlist-pos-1}/${playlist-count}]
 screenshot-template = '~~desktop/MPV-%P-N%n'
 watch-later-options = start
