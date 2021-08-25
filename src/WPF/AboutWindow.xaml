@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     
-    Title="About mpv.net"
+    Title="关于 mpv.net_CM"
     FontSize="16"
     ShowInTaskbar="False"
     WindowStartupLocation="CenterOwner"
@@ -18,7 +18,7 @@
     
     <Grid>
         <StackPanel HorizontalAlignment="Center">
-            <TextBlock FontSize="30" TextAlignment="Center"  Margin="10,10,10,0">mpv.net</TextBlock>
+            <TextBlock FontSize="30" TextAlignment="Center"  Margin="10,10,10,0">mpv.net的中文模组</TextBlock>
             <TextBlock Name="ContentBlock" TextAlignment="Center" Margin="20,10,20,20"></TextBlock>
         </StackPanel>
     </Grid>
