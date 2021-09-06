@@ -57,7 +57,7 @@ namespace MsgBoxEx
 
         public static MsgBoxExCheckBoxData CheckBoxData { get; set; } = null;
 
-        public static FontFamily MsgFontFamily { get; set; } = new FontFamily("Segoe UI");
+        public static FontFamily MsgFontFamily { get; set; } = new FontFamily("微软雅黑");
 
         public static double MsgFontSize { get; set; } = 12;
 
