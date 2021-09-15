@@ -12,7 +12,7 @@
  # 命令行的输入测试模式的命令：
  # mpvnet --input-test
 
- # 下列被绑定的键位可以在右键菜单的这个选项中查看：查看 > 快捷键
+ # 下列被绑定的键位可以在右键菜单的这个选项中查看：工具 > input 编辑器
 
  # mpv input.conf defaults: https://github.com/mpv-player/mpv/blob/master/etc/input.conf
  # mpv input commands: https://mpv.io/manual/master/#list-of-input-commands
