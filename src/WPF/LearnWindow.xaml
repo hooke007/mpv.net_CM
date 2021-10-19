@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     
-    Title="Learn Input"
+    Title="快捷键修改"
     Height="150"
     Width="350"
     FontSize="16"
@@ -48,7 +48,7 @@
             HorizontalAlignment="Center"
             />
         
-        <Button x:Name="ConfirmButton" Grid.Row="2" Margin="10,0,10,10" Click="ConfirmButton_Click">Confirm</Button>
-        <Button x:Name="ClearButton" Grid.Row="2" Margin="0,0,10,10" Click="ClearButton_Click" Grid.Column="1">Clear</Button>
+        <Button x:Name="ConfirmButton" Grid.Row="2" Margin="10,0,10,10" Click="ConfirmButton_Click">确认</Button>
+        <Button x:Name="ClearButton" Grid.Row="2" Margin="0,0,10,10" Click="ClearButton_Click" Grid.Column="1">清除</Button>
     </Grid>
 </Window>

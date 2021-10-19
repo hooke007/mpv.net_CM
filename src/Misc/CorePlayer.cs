@@ -138,9 +138,9 @@ namespace mpvnet
                 SetPropertyString("msg-level", "osd/libass=fatal");
             }
 
-            SetPropertyString("watch-later-options", "mute");
+            SetPropertyString("watch-later-options", "vid,aid,sid");
             SetPropertyString("screenshot-directory", "~~desktop/");
-            SetPropertyString("script-opts", "osc-scalewindowed=1.5,osc-hidetimeout=2000,console-scale=1.5");
+            SetPropertyString("script-opts", "osc-scalewindowed=1.0,osc-hidetimeout=1000,console-scale=1.5,osc-deadzonesize=1,osc-seekbarstyle=knob,osc-title=音量[${volume}]  速度[${speed}]  列表[${playlist-pos-1}/${playlist-count}]");
             SetPropertyString("osd-playing-msg", "${filename}");
             SetPropertyString("wid", MainForm.Hwnd.ToString());
             SetPropertyString("osc", "yes");
@@ -151,7 +151,6 @@ namespace mpvnet
             SetPropertyInt("osd-duration", 2000);
 
             SetPropertyBool("keep-open", true);
-            SetPropertyBool("keep-open-pause", false);
 
             SetInputBindingProperties();
 

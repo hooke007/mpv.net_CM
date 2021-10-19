@@ -1,209 +1,218 @@
 
-# This file defines the key and mouse bindings and also the context menu of mpv.net.
+ # 此文件定义mpvnet的快捷键绑定和右键菜单项目
+ # 可以在右键菜单的“设置”中找到 input.conf 和 mpv.conf 编辑器
 
-# A input and config editor can be found in the context menu under 'Settings'.
+ # 每一行都以空格字符开头以便于搜索
+ # 如果您想知道“o”键位是否已经被绑定，可以搜索“o”
+ # 不要绑定 "MBTN_RIGHT" 和 "_" 键位，不要重命名 "Recent;Track;Titles;Chapters;Profile" 这些特殊的注释
 
-# The input test mode can be started via command line: --input-test
+ # 命令行的输入测试模式的命令：
+ # mpvnet --input-test
 
-# The input key list can be printed with --input-keylist or
-# shown from the context menu under: View > Show Keys
+ # 下列被绑定的键位可以在右键菜单的这个选项中查看：工具 > input 编辑器
 
-# mpv.net input.conf defaults:
-# https://github.com/stax76/mpv.net/blob/master/src/Resources/input.conf.txt
+ # mpv input.conf defaults: https://github.com/mpv-player/mpv/blob/master/etc/input.conf
+ # mpv input commands: https://mpv.io/manual/master/#list-of-input-commands
+ # mpv input options: https://mpv.io/manual/master/#input
 
-# mpv input.conf defaults:
-# https://github.com/mpv-player/mpv/blob/master/etc/input.conf
 
-# mpv input commands:
-# https://mpv.io/manual/master/#list-of-input-commands
+ o                 script-message mpv.net open-files                     #menu: 加载 > 文件
+ _                 script-message mpv.net open-url                       #menu: 加载 > 链接
+ _                 script-message mpv.net open-optical-media             #menu: 加载 > 光盘目录
+ _                 ignore                                                #menu: 加载 > -
+ _                 script-message mpv.net load-audio                     #menu: 加载 > 其它音轨
+ _                 script-message mpv.net load-sub                       #menu: 加载 > 其它字幕
+ _                 ignore                                                #menu: 加载 > -
+ _                 script-message mpv.net open-files append              #menu: 加载 > 添加到当前列表
+ _                 playlist-shuffle                                      #menu: 加载 > 播放列表乱序重排
+ _                 ignore                                                #menu: 加载 > -
+ F7                script-message mpv.net show-recent                    #menu: 加载 > 最近文件列表
+ _                 ignore                                                #menu: 加载 > Recent
+ _                 ignore                                                #menu: -
 
-# mpv input options:
-# https://mpv.io/manual/master/#input
+ SPACE             cycle pause                                           #menu: 文件 > 播放/暂停
+ _                 stop                                                  #menu: 文件 > 停止
+ T                 cycle ontop                                           #menu: 文件 > 开/关 置顶状态
+ ENTER             cycle fullscreen                                      #menu: 文件 > 切换 全屏
+ O                 no-osd cycle-values osd-level 3 1                     #menu: 文件 > 开/关 显示OSD时间轴
+ i                 script-message mpv.net show-info                      #menu: 文件 > 显示简要信息
+ l                 ab-loop                                               #menu: 文件 > 设定/清除 片段循环
+ L                 cycle-values loop-file inf no                         #menu: 文件 > 开/关 循环播放
+ I                 script-binding stats/display-stats-toggle             #menu: 文件 > 开/关 统计数据
+ _                 ignore                                                #menu: 文件 > -
+ [                 add speed -0.1                                        #menu: 文件 > 速度 -0.1
+ ]                 add speed  0.1                                        #menu: 文件 > 速度 +0.1
+ BS                set speed 1                                           #menu: 文件 > 速度 重置
+ _                 ignore                                                #menu: Track
 
-o           script-message mpv.net open-files         #menu: Open > Open Files...
-u           script-message mpv.net open-url           #menu: Open > Open URL or file path from clipboard
-_           script-message mpv.net open-optical-media #menu: Open > Open DVD/Blu-ray Drive/Folder...
-_           ignore                                    #menu: Open > -
-Alt+a       script-message mpv.net load-audio         #menu: Open > Load external audio files...
-Alt+s       script-message mpv.net load-sub           #menu: Open > Load external subtitle files...
-_           ignore                                    #menu: Open > -
-_           script-message mpv.net open-files append  #menu: Open > Add files to playlist...
-_           ignore                                    #menu: Open > -
-_           ignore                                    #menu: Open > Recent
+ F8                script-message mpv.net show-playlist                  #menu: 导航 > .NET播放列表
+ CTRL+F8           script-binding playlistmanager/showplaylist           #menu: 导航 > OSD高级播放列表
+ F9                show-text ${track-list} 5000                          #menu: 导航 > OSD轨道信息
+ _                 ignore                                                #menu: 导航 > -
+ F11               playlist-prev                                         #menu: 导航 > 上个文件
+ F12               playlist-next                                         #menu: 导航 > 下个文件
+ _                 script-message mpv.net playlist-first                 #menu: 导航 > 首位的文件
+ _                 script-message mpv.net playlist-last                  #menu: 导航 > 末位的文件
+ ,                 frame-back-step                                       #menu: 导航 > 上一帧
+ .                 frame-step                                            #menu: 导航 > 下一帧
+ LEFT              seek -5                                               #menu: 导航 > 后退 5 秒
+ RIGHT             seek  5                                               #menu: 导航 > 前进 5 秒
+ DOWN              seek -30                                              #menu: 导航 > 后退 30 秒
+ UP                seek  30                                              #menu: 导航 > 前进 30 秒
+ PGDWN             add chapter -1                                        #menu: 导航 > 上一章节
+ PGUP              add chapter  1                                        #menu: 导航 > 下一章节
+ _                 ignore                                                #menu: 导航 > -
+ _                 ignore                                                #menu: 导航 > Titles
+ _                 ignore                                                #menu: 导航 > Chapters
 
-_           ignore                 #menu: -
-Space       cycle pause            #menu: Play/Pause
-Ctrl+s      stop                   #menu: Stop
-_           ignore                 #menu: -
-Enter       cycle fullscreen       #menu: Toggle Fullscreen
-f           cycle fullscreen
+ CTRL+-            add video-zoom -0.1                                   #menu: 画面 > 缩小
+ CTRL+=            add video-zoom  0.1                                   #menu: 画面 > 放大
+ w                 cycle-values panscan 0.0 1.0                          #menu: 画面 > 开/关 裁切填充
+ _                 cycle-values video-rotate 0 270 180 90                #menu: 画面 > 左旋转
+ _                 cycle-values video-rotate 0 90 180 270                #menu: 画面 > 右旋转
+ CTRL+BS           set video-zoom 0; set panscan 0; set video-rotate 0   #menu: 画面 > 重置
+ _                 ignore                                                #menu: 画面 > -
+ a                 cycle-values video-aspect 16:9 4:3 2.35:1 -1          #menu: 画面 > 切换 宽高比
+ _                 ignore                                                #menu: 画面 > -
+ ALT+`             script-message mpv.net window-scale 0.5               #menu: 画面 > 窗口缩放 >  50%
+ ALT+1             script-message mpv.net window-scale 1.0               #menu: 画面 > 窗口缩放 > 100%
+ ALT+2             script-message mpv.net window-scale 1.5               #menu: 画面 > 窗口缩放 > 150%
+ ALT+3             script-message mpv.net window-scale 2.0               #menu: 画面 > 窗口缩放 > 200%
+ ALT+-             script-message mpv.net scale-window 1.2               #menu: 画面 > 窗口缩放 > 递减
+ ALT+=             script-message mpv.net scale-window 0.8               #menu: 画面 > 窗口缩放 > 递增
+ _                 ignore                                                #menu: -
+
+
+ CTRL+h            cycle-values hwdec no yes auto-copy                   #menu: 视频 > 切换 软解/硬解/硬解增强
+ _                 cycle icc-profile-auto                                #menu: 视频 > 开/关 自动ICC校色
+ 1                 add contrast -1                                       #menu: 视频 > 调色 > 对比度 -1
+ 2                 add contrast  1                                       #menu: 视频 > 调色 > 对比度 +1
+ _                 ignore                                                #menu: 视频 > 调色 > -
+ 3                 add brightness -1                                     #menu: 视频 > 调色 > 亮度 -1
+ 4                 add brightness  1                                     #menu: 视频 > 调色 > 亮度 +1
+ _                 ignore                                                #menu: 视频 > 调色 > -
+ 5                 add gamma -1                                          #menu: 视频 > 调色 > 伽马 -1
+ 6                 add gamma  1                                          #menu: 视频 > 调色 > 伽马 +1
+ _                 ignore                                                #menu: 视频 > 调色 > -
+ 7                 add saturation -1                                     #menu: 视频 > 调色 > 饱和度 -1
+ 8                 add saturation  1                                     #menu: 视频 > 调色 > 饱和度 +1
+ _                 ignore                                                #menu: 视频 > 调色 > -
+ 9                 add hue -1                                            #menu: 视频 > 调色 > 色相 -1
+ 0                 add hue  1                                            #menu: 视频 > 调色 > 色相 +1
+ _                 ignore                                                #menu: 视频 > 调色 > -
+ SHIFT+BS          set contrast 0; set brightness 0; set gamma 0; set saturation 0; set hue 0   #menu: 视频 > 调色 > 重置
+ s                 screenshot subtitles                                  #menu: 视频 > 截屏 > 源分辨率
+ S                 screenshot video                                      #menu: 视频 > 截屏 > 同上 无字幕OSD
+ CTRL+s            screenshot window                                     #menu: 视频 > 截屏 > 实际画面
+ d                 cycle deinterlace                                     #menu: 视频 > 开/关 去隔行扫描
+ D                 cycle deband                                          #menu: 视频 > 开/关 去色带
+
+ KP1               script-message mpv.net cycle-audio                    #menu: 音频 > 切换 下一个
+ _                 ignore                                                #menu: 音频 > -
+ -                 add volume -1                                         #menu: 音频 > 音量 -1
+ =                 add volume  1                                         #menu: 音频 > 音量 +1
+ m                 cycle mute                                            #menu: 音频 > 开/关 静音
+ _                 ignore                                                #menu: 音频 > -
+ CTRL+,            add audio-delay -0.1                                  #menu: 音频 > 延迟 -0.1
+ CTRL+.            add audio-delay  0.1                                  #menu: 音频 > 延迟 +0.1
+ _                 set audio-delay  0                                    #menu: 音频 > 延迟 重置
+ _                 ignore                                                #menu: 音频 > -
+ <                 script-binding cycle_adevice/back                     #menu: 音频 > 上个输出设备
+ >                 script-binding cycle_adevice/next                     #menu: 音频 > 下个输出设备
+
+ KP2               cycle sub                                             #menu: 字幕 > 切换 下一个
+ _                 cycle sub-visibility                                  #menu: 字幕 > 切换 可见性
+ _                 ignore                                                #menu: 字幕 > -
+ CTRL+;            add sub-delay -0.1                                    #menu: 字幕 > 延迟 -0.1
+ CTRL+'            add sub-delay  0.1                                    #menu: 字幕 > 延迟 +0.1
+ :                 add sub-pos -1                                        #menu: 字幕 > 上移
+ "                 add sub-pos +1                                        #menu: 字幕 > 下移
+ ;                 add sub-scale -0.1                                    #menu: 字幕 > 字号 -0.1
+ '                 add sub-scale  0.1                                    #menu: 字幕 > 字号 +0.1
+ _                 ignore                                                #menu: 字幕 > -
+ _                 set sub-delay 0; set sub-pos 0; set sub-scale 0       #menu: 字幕 > 恢复初始
+ _                 ignore                                                #menu: -
+
+ ~                 vf clr ""                                             #menu: 视频滤镜 > 清空
+ _                 vf toggle vapoursynth="~~/mvtools-fast.vpy"           #menu: 视频滤镜 > 预设组 > mvtools补帧 2x_8b
+ _                 vf toggle vapoursynth="~~/mvtools-standard.vpy"       #menu: 视频滤镜 > 预设组 > mvtools补帧 60
+ _                 ignore                                                #menu: 视频滤镜 > -
+ !                 vf toggle format=colorlevels=limited                  #menu: 视频滤镜 > 开/关 动态范围限制
+ @                 vf toggle vflip                                       #menu: 视频滤镜 > 开/关 垂直翻转
+ SHARP             vf toggle hflip                                       #menu: 视频滤镜 > 开/关 水平翻转
+ $                 vf toggle pad=aspect=16/9:x=-1:y=-1                   #menu: 视频滤镜 > 开/关 填充16:9的黑边
+ %                 vf toggle format=gamma=gamma2.2                       #menu: 视频滤镜 > 开/关 伽马修正2.2
+ ^                 vf toggle fps=fps=60/1.001                            #menu: 视频滤镜 > 开/关 强制帧数59.94
+ &                 vf toggle colortemperature=temperature=6500           #menu: 视频滤镜 > 开/关 色温修正6500
+
+ CTRL+`            change-list glsl-shaders clr ""                                               #menu: 着色器 > 清空
+ _                 change-list glsl-shaders set "~~/shaders/Anime4K_Denoise_Bilateral_Mode.glsl;~~/shaders/Anime4K_Upscale_Deblur_DoG_x2.glsl"   #menu: 着色器 > 预设组 > A4k-DD
+ _                 change-list glsl-shaders set "~~/shaders/Anime4K_Darken_HQ.glsl;~~/shaders/Anime4K_Thin_HQ.glsl;~~/shaders/Anime4K_Denoise_Bilateral_Mode.glsl;~~/shaders/Anime4K_Deblur_DoG.glsl"   #menu: 着色器 > 预设组 > A4k-DTDD
+ _                 change-list glsl-shaders set "~~/shaders/cas_luma_0_5.glsl;~~/shaders/ravu-zoom-r3.glsl"   #menu: 着色器 > 预设组 > CAS05&RAVU3
+ _                 change-list glsl-shaders set "~~/shaders/SSimSuperRes.glsl;~~/shaders/SSimDownscaler.glsl"   #menu: 着色器 > 预设组 > SSSR&DS
+ _                 ignore                                                                         #menu: 着色器 > -
+ CTRL+1            change-list glsl-shaders toggle "~~/shaders/ACNet_HDN_L1.glsl"                 #menu: 着色器 > 开/关 ACNet_HDN_L1
+ CTRL+2            change-list glsl-shaders toggle "~~/shaders/adaptive-sharpen_2_0_anime.glsl"   #menu: 着色器 > 开/关 自适应锐化（2D）
+ CTRL+3            change-list glsl-shaders toggle "~~/shaders/AiUpscale_Fast_2x_Photo.glsl"      #menu: 着色器 > 开/关 AiUpscale_Fast_2x_Photo
+ CTRL+4            change-list glsl-shaders toggle "~~/shaders/Anime4K_Upscale_DTD_x2.glsl"       #menu: 着色器 > 开/关 Anime4K_Upscale_DTD_x2
+ CTRL+5            change-list glsl-shaders toggle "~~/shaders/Anime4K_Restore_CNN_Moderate_M.glsl"   #menu: 着色器 > 开/关 A4K_线条重塑（中）
+ CTRL+6            change-list glsl-shaders toggle "~~/shaders/FSRCNNX_x2_8-0-4-1_LineArt.glsl"   #menu: 着色器 > 开/关 FSRCNNX_x2_8041_LA
+ CTRL+7            change-list glsl-shaders toggle "~~/shaders/KrigBilateral.glsl"                #menu: 着色器 > 开/关 KrigBilateral
+ CTRL+8            change-list glsl-shaders toggle "~~/shaders/nnedi3-nns128-win8x4.glsl"         #menu: 着色器 > 开/关 NNEDI3_128
+ CTRL+9            change-list glsl-shaders toggle "~~/shaders/ravu-zoom-r4.glsl"                 #menu: 着色器 > 开/关 ravu-zoom-r4
+
+
+ _                 ignore                                                #menu: -
+ _                 ignore                                                #menu: 其它 > Profile
+ b                 cycle border                                          #menu: 其它 > 切换 边框模式
+ _                 script-binding osc/visibility                         #menu: 其它 > 切换 OSC可见性
+ `                 script-binding console/enable                         #menu: 其它 > 打开 控制台
+
+ CTRL+M            script-message mpv.net show-conf-editor               #menu: 工具 > mpv 选项设置
+ CTRL+I            script-message mpv.net show-input-editor              #menu: 工具 > input 编辑器
+ _                 script-message mpv.net open-conf-folder               #menu: 工具 > 打开 设置文件夹
+ F1                script-message mpv.net show-command-palette           #menu: 工具 > 命令面板
+ F2                script-message mpv.net show-properties                #menu: 工具 > 属性列表
+ _                 script-message mpv.net show-media-info                #menu: 工具 > 输出文本 > MediaInfo
+ _                 script-message mpv.net show-audio-devices             #menu: 工具 > 输出文本 > 音频设备列表
+ _                 script-message mpv.net show-commands                  #menu: 工具 > 输出文本 > 命令列表
+ _                 script-message mpv.net show-profiles                  #menu: 工具 > 输出文本 > 可用配置组
+ _                 script-message mpv.net show-protocols                 #menu: 工具 > 输出文本 > 协议列表
+ _                 script-message mpv.net show-decoders                  #menu: 工具 > 输出文本 > 所有解码器
+ _                 script-message mpv.net show-demuxers                  #menu: 工具 > 输出文本 > 所有分离器
+ _                 script-message mpv.net show-keys                      #menu: 工具 > 输出文本 > 所有键值
+ _                 script-message mpv.net show-history                   #menu: 工具 > 输出文本 > 历史记录
+ _                 script-message mpv.net show-setup-dialog              #menu: 工具 > 注册
+
+ _                 script-message mpv.net shell-execute https://github.com/hooke007/mpv.net_CM                           #menu: 帮助 > 项目主页
+ _                 script-message mpv.net shell-execute https://hooke007.github.io                                       #menu: 帮助 > 作者主页
+ _                 script-message mpv.net shell-execute https://mpv.io/manual/master/                                    #menu: 帮助 > mpv手册
+ _                 script-message mpv.net shell-execute https://github.com/stax76/mpv.net/blob/master/docs/Manual_chs.md #menu: 帮助 > mpv.net手册
+ _                 ignore                                                                                                #menu: 帮助 > -
+ _                 script-message mpv.net show-about                                                                     #menu: 帮助 > 关于
+
+ _                 ignore                                                #menu: -
+ CTRL+q            quit                                                  #menu: 退出程序
+ Q                 quit-watch-later                                      #menu: 退出并保存当前状态
+
+ POWER             quit
+ PLAY              cycle pause
+ PAUSE             cycle pause
+ PLAYPAUSE         cycle pause
+ STOP              quit
+ FORWARD           seek  30
+ REWIND            seek -30
+ NEXT              playlist-next
+ PREV              playlist-prev
+
+ MBTN_FORWARD      playlist-next
+ MBTN_BACK         playlist-prev
+ MBTN_LEFT         ignore
+ MBTN_LEFT_DBL     cycle fullscreen
+ Wheel_Up          add volume  1
+ Wheel_Down        add volume -1
+
+ ESC               set fullscreen no
+
+
  
-F11         playlist-prev; set pause no #menu: Navigate > Previous File
-F12         playlist-next; set pause no #menu: Navigate > Next File
-_           ignore                 #menu: Navigate > -
-Home        script-message mpv.net playlist-first #menu: Navigate > First File
-End         script-message mpv.net playlist-last  #menu: Navigate > Last File
-_           ignore                 #menu: Navigate > -
-PGUP        add chapter  1         #menu: Navigate > Next Chapter
-PGDWN       add chapter -1         #menu: Navigate > Previous Chapter
-_           ignore                 #menu: Navigate > -
-.           frame-step             #menu: Navigate > Jump Next Frame
-,           frame-back-step        #menu: Navigate > Jump Previous Frame
-_           ignore                 #menu: Navigate > -
-Right       seek  5                #menu: Navigate > Jump 5 sec forward
-Left        seek -5                #menu: Navigate > Jump 5 sec backward
-_           ignore                 #menu: Navigate > -
-Up          seek  30               #menu: Navigate > Jump 30 sec forward
-Down        seek -30               #menu: Navigate > Jump 30 sec backward
-_           ignore                 #menu: Navigate > -
-Ctrl+Right  seek  300              #menu: Navigate > Jump 5 min forward
-Ctrl+Left   seek -300              #menu: Navigate > Jump 5 min backward
-_           ignore                 #menu: Navigate > -
-_           ignore                 #menu: Navigate > Titles
-_           ignore                 #menu: Navigate > Chapters
-
-Ctrl++      add video-zoom  0.1    #menu: Pan & Scan > Increase Size
-Ctrl+-      add video-zoom -0.1    #menu: Pan & Scan > Decrease Size
-_           ignore                 #menu: Pan & Scan > -
-Ctrl+KP4    add video-pan-x -0.01  #menu: Pan & Scan > Move Left
-Ctrl+KP6    add video-pan-x  0.01  #menu: Pan & Scan > Move Right
-_           ignore                 #menu: Pan & Scan > -
-Ctrl+KP8    add video-pan-y -0.01  #menu: Pan & Scan > Move Up
-Ctrl+KP2    add video-pan-y  0.01  #menu: Pan & Scan > Move Down
-_           ignore                 #menu: Pan & Scan > -
-w           add panscan -0.1       #menu: Pan & Scan > Decrease Height
-W           add panscan  0.1       #menu: Pan & Scan > Increase Height
-_           ignore                 #menu: Pan & Scan > -
-Ctrl+BS     set video-zoom 0; set video-pan-x 0; set video-pan-y 0 #menu: Pan & Scan > Reset
-
-Ctrl+1      add contrast -1        #menu: Video > Decrease Contrast
-Ctrl+2      add contrast  1        #menu: Video > Increase Contrast
-_           ignore                 #menu: Video > -
-Ctrl+3      add brightness -1      #menu: Video > Decrease Brightness
-Ctrl+4      add brightness  1      #menu: Video > Increase Brightness
-_           ignore                 #menu: Video > -
-Ctrl+5      add gamma -1           #menu: Video > Decrease Gamma
-Ctrl+6      add gamma  1           #menu: Video > Increase Gamma
-_           ignore                 #menu: Video > -
-Ctrl+7      add saturation -1      #menu: Video > Decrease Saturation
-Ctrl+8      add saturation  1      #menu: Video > Increase Saturation
-_           ignore                 #menu: Video > -
-s           async screenshot       #menu: Video > Take Screenshot
-d           cycle deinterlace      #menu: Video > Toggle Deinterlace
-a           cycle-values video-aspect 16:9 4:3 2.35:1 -1 #menu: Video > Cycle Aspect Ratio
-
-KP7         script-message mpv.net cycle-audio #menu: Audio > Cycle/Next
-_           ignore                 #menu: Audio > -
-KP6         add audio-delay  0.1   #menu: Audio > Delay +0.1
-KP9         add audio-delay -0.1   #menu: Audio > Delay -0.1
-
-KP8         cycle sub              #menu: Subtitle > Cycle/Next
-v           cycle sub-visibility   #menu: Subtitle > Toggle Visibility
-_           ignore                 #menu: Subtitle > -
-z           add sub-delay -0.1     #menu: Subtitle > Delay -0.1
-Z           add sub-delay  0.1     #menu: Subtitle > Delay +0.1
-_           ignore                 #menu: Subtitle > -
-r           add sub-pos -1         #menu: Subtitle > Move Up
-R           add sub-pos +1         #menu: Subtitle > Move Down
-_           ignore                 #menu: Subtitle > -
-F           add sub-scale -0.1     #menu: Subtitle > Decrease Subtitle Font Size
-G           add sub-scale  0.1     #menu: Subtitle > Increase Subtitle Font Size
-
-_           ignore                 #menu: Track
-
-+           add volume  2          #menu: Volume > Up
--           add volume -2          #menu: Volume > Down
-0           add volume  2          #menu: Volume > Up
-9           add volume -2          #menu: Volume > Down
-_           ignore                 #menu: Volume > -
-m           cycle mute             #menu: Volume > Mute
-
-[           multiply speed 1/1.1   #menu: Speed > -10%
-]           multiply speed 1.1     #menu: Speed > +10%
-_           ignore                 #menu: Speed > -
-{           multiply speed 0.5     #menu: Speed > Half
-}           multiply speed 2.0     #menu: Speed > Double
-_           ignore                 #menu: Speed > -
-BS          set speed 1            #menu: Speed > Reset
-
-Ctrl+t  set ontop yes                               #menu: View > On Top > Enable
-Ctrl+T  set ontop no                                #menu: View > On Top > Disable
-Alt++   script-message mpv.net scale-window 1.2     #menu: View > Zoom > Enlarge
-Alt+-   script-message mpv.net scale-window 0.8     #menu: View > Zoom > Shrink
-_       ignore                                      #menu: View > Zoom > -
-Alt+0   script-message mpv.net window-scale 0.5     #menu: View > Zoom > 50 %
-Alt+1   script-message mpv.net window-scale 1.0     #menu: View > Zoom > 100 %
-Alt+2   script-message mpv.net window-scale 2.0     #menu: View > Zoom > 200 %
-Alt+3   script-message mpv.net window-scale 3.0     #menu: View > Zoom > 300 %
-b       cycle border                                #menu: View > Toggle Border
-i       script-message mpv.net show-info            #menu: View > File/Stream Info
-Del     script-binding osc/visibility               #menu: View > Toggle OSC Visibility
-Ctrl+r  cycle-values video-rotate 90 180 270 0      #menu: View > Rotate Video
-T       script-binding stats/display-stats-toggle   #menu: View > Toggle Statistics
-t       script-binding stats/display-stats          #menu: View > Show Statistics
-_       script-message mpv.net show-audio-devices   #menu: View > Show Audio Devices
-C       script-message mpv.net show-commands        #menu: View > Show Commands
-`       script-binding console/enable               #menu: View > Show Console
-_       script-message mpv.net show-decoders        #menu: View > Show Decoders
-_       script-message mpv.net show-demuxers        #menu: View > Show Demuxers
-_       script-message mpv.net show-keys            #menu: View > Show Keys
-F8      script-message mpv.net show-playlist        #menu: View > Show Playlist
-Ctrl+p  script-message mpv.net show-profiles        #menu: View > Show Profiles
-p       show-progress                               #menu: View > Show Progress
-P       script-message mpv.net show-properties      #menu: View > Show Properties
-_       script-message mpv.net show-protocols       #menu: View > Show Protocols
-F9      show-text ${track-list} 5000                #menu: View > Show Tracks
-Ctrl+m  script-message mpv.net show-media-info      #menu: View > Show Media Info
-Alt+r   script-message mpv.net show-recent          #menu: View > Show Recent
-
-_       ignore                                      #menu: Profile
-
-c       script-message mpv.net show-conf-editor     #menu: Settings > Show Config Editor
-Ctrl+i  script-message mpv.net show-input-editor    #menu: Settings > Show Input Editor
-Ctrl+f  script-message mpv.net open-conf-folder     #menu: Settings > Open Config Folder
-
-h       script-message mpv.net show-history         #menu: Tools > Show History
-l       ab-loop                                     #menu: Tools > Set/clear A-B loop points
-L       cycle-values loop-file inf no               #menu: Tools > Toggle infinite file looping
-_       playlist-shuffle                            #menu: Tools > Shuffle Playlist
-Ctrl+h  cycle-values hwdec auto no                  #menu: Tools > Toggle Hardware Decoding
-_ script-message mpv.net show-setup-dialog          #menu: Tools > Setup...
-
-_ script-message mpv.net shell-execute https://mpv.io                    #menu: Help > Website mpv
-_ script-message mpv.net shell-execute https://github.com/stax76/mpv.net #menu: Help > Website mpv.net
-_ ignore                                                                 #menu: Help > -
-_ script-message mpv.net shell-execute https://mpv.io/manual/stable/     #menu: Help > Manual mpv
-_ script-message mpv.net shell-execute https://github.com/stax76/mpv.net/blob/master/docs/Manual.md #menu: Help > Manual mpv.net
-_ ignore                                                                 #menu: Help > -
-_ script-message mpv.net update-check                                    #menu: Help > Check for Updates
-_ script-message mpv.net show-about                                      #menu: Help > About mpv.net
-
-F1 script-message mpv.net show-command-palette #menu: Command Palette
-
-_ ignore           #menu: -
-Esc quit           #menu: Exit
-Q quit-watch-later #menu: Exit Watch Later
-
-Power        quit
-Play         cycle pause
-Pause        cycle pause
-PlayPause    cycle pause
-MBTN_Mid     cycle pause
-Stop         stop
-Forward      seek  60
-Rewind       seek -60
-Wheel_Up     add volume  2
-Wheel_Down   add volume -2
-Wheel_Left   add volume -2
-Wheel_Right  add volume  2
-Prev         playlist-prev
-Next         playlist-next
-MBTN_Forward playlist-next
-MBTN_Back    playlist-prev
->            playlist-next
-<            playlist-prev
-Ctrl+Wheel_Up   no-osd seek  7
-Ctrl+Wheel_Down no-osd seek -7
-MBTN_Left       ignore
-MBTN_Left_DBL   cycle fullscreen
-KP_Enter        cycle fullscreen

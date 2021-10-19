@@ -8,7 +8,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     mc:Ignorable="d"
     
-    Title="Config Editor"
+    Title="mpv.conf 编辑器"
     Height="530"
     Width="700"
     Foreground="{Binding Theme.Foreground}"
@@ -31,7 +31,7 @@
 
         <local:SearchTextBoxUserControl
             x:Name="SearchControl"
-            HintText="Find a setting"
+            HintText="查找设置"
             Width="250"
             Margin="0,20,0,0"
             Grid.ColumnSpan="2"
@@ -75,10 +75,10 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <TextBlock Name="OpenSettingsTextBlock" Margin="0,30,0,0" Cursor="Hand" TextWrapping="WrapWithOverflow" Foreground="{Binding Theme.Heading}" MouseUp="OpenSettingsTextBlock_MouseUp">Open config folder</TextBlock>
-            <TextBlock Name="PreviewTextBlock"      Margin="0,15,0,0" Cursor="Hand" TextWrapping="WrapWithOverflow" Foreground="{Binding Theme.Heading}" MouseUp="PreviewTextBlock_MouseUp">Preview mpv.conf</TextBlock>
-            <TextBlock Name="ShowManualTextBlock"   Margin="0,15,0,0" Cursor="Hand" TextWrapping="WrapWithOverflow" Foreground="{Binding Theme.Heading}" MouseUp="ShowManualTextBlock_MouseUp">Show mpv manual</TextBlock>
-            <TextBlock Name="SupportTextBlock"      Margin="0,15,0,0" Cursor="Hand" TextWrapping="WrapWithOverflow" Foreground="{Binding Theme.Heading}" MouseUp="SupportTextBlock_MouseUp">Show support forum</TextBlock>
+            <TextBlock Name="OpenSettingsTextBlock" Margin="0,30,0,0" Cursor="Hand" TextWrapping="WrapWithOverflow" Foreground="{Binding Theme.Heading}" MouseUp="OpenSettingsTextBlock_MouseUp">打开 设置目录</TextBlock>
+            <TextBlock Name="PreviewTextBlock"      Margin="0,15,0,0" Cursor="Hand" TextWrapping="WrapWithOverflow" Foreground="{Binding Theme.Heading}" MouseUp="PreviewTextBlock_MouseUp">预览mpv.conf</TextBlock>
+            <TextBlock Name="ShowManualTextBlock"   Margin="0,15,0,0" Cursor="Hand" TextWrapping="WrapWithOverflow" Foreground="{Binding Theme.Heading}" MouseUp="ShowManualTextBlock_MouseUp">mpv 手册</TextBlock>
+            <TextBlock Name="SupportTextBlock"      Margin="0,15,0,0" Cursor="Hand" TextWrapping="WrapWithOverflow" Foreground="{Binding Theme.Heading}" MouseUp="SupportTextBlock_MouseUp">上游支持</TextBlock>
         </StackPanel>
     </Grid>
 </Window>
