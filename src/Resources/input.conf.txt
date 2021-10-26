@@ -148,15 +148,15 @@
  CTRL+`            change-list glsl-shaders clr ""                                               #menu: 着色器 > 清空
  _                 change-list glsl-shaders set "~~/shaders/Anime4K_Denoise_Bilateral_Mode.glsl;~~/shaders/Anime4K_Upscale_Deblur_DoG_x2.glsl"   #menu: 着色器 > 预设组 > A4k-DD
  _                 change-list glsl-shaders set "~~/shaders/Anime4K_Darken_HQ.glsl;~~/shaders/Anime4K_Thin_HQ.glsl;~~/shaders/Anime4K_Denoise_Bilateral_Mode.glsl;~~/shaders/Anime4K_Deblur_DoG.glsl"   #menu: 着色器 > 预设组 > A4k-DTDD
- _                 change-list glsl-shaders set "~~/shaders/cas_luma_0_5.glsl;~~/shaders/ravu-zoom-r3.glsl"   #menu: 着色器 > 预设组 > CAS05&RAVU3
- _                 change-list glsl-shaders set "~~/shaders/SSimSuperRes.glsl;~~/shaders/SSimDownscaler.glsl"   #menu: 着色器 > 预设组 > SSSR&DS
+ _                 change-list glsl-shaders set "~~/shaders/cas_luma_0_5.glsl;~~/shaders/ravu-zoom-r3.glsl"   #menu: 着色器 > 预设组 > CAS05&RAVUzr3
+ _                 change-list glsl-shaders set "~~/shaders/SSimSuperRes.glsl;~~/shaders/SSimDownscaler.glsl"   #menu: 着色器 > 预设组 > SSimSR&DS
  _                 ignore                                                                         #menu: 着色器 > -
  CTRL+1            change-list glsl-shaders toggle "~~/shaders/ACNet_HDN_L1.glsl"                 #menu: 着色器 > 开/关 ACNet_HDN_L1
  CTRL+2            change-list glsl-shaders toggle "~~/shaders/adaptive-sharpen_2_0_anime.glsl"   #menu: 着色器 > 开/关 自适应锐化（2D）
- CTRL+3            change-list glsl-shaders toggle "~~/shaders/AiUpscale_Fast_2x_Photo.glsl"      #menu: 着色器 > 开/关 AiUpscale_Fast_2x_Photo
- CTRL+4            change-list glsl-shaders toggle "~~/shaders/Anime4K_Upscale_DTD_x2.glsl"       #menu: 着色器 > 开/关 Anime4K_Upscale_DTD_x2
- CTRL+5            change-list glsl-shaders toggle "~~/shaders/Anime4K_Restore_CNN_Moderate_M.glsl"   #menu: 着色器 > 开/关 A4K_线条重塑（中）
- CTRL+6            change-list glsl-shaders toggle "~~/shaders/FSRCNNX_x2_8-0-4-1_LineArt.glsl"   #menu: 着色器 > 开/关 FSRCNNX_x2_8041_LA
+ CTRL+3            change-list glsl-shaders toggle "~~/shaders/AiUpscale_Fast_2x_Photo.glsl"      #menu: 着色器 > 开/关 AiUpscale_Fast_Photo
+ CTRL+4            change-list glsl-shaders toggle "~~/shaders/Anime4K_Upscale_DTD_x2.glsl"       #menu: 着色器 > 开/关 A4K_放大_DTD
+ CTRL+5            change-list glsl-shaders toggle "~~/shaders/Anime4K_Restore_CNN_M.glsl"        #menu: 着色器 > 开/关 A4K_线条重塑（中）
+ CTRL+6            change-list glsl-shaders toggle "~~/shaders/FSRCNNX_x2_8-0-4-1_LineArt.glsl"   #menu: 着色器 > 开/关 FSRCNNX_8041_LA
  CTRL+7            change-list glsl-shaders toggle "~~/shaders/KrigBilateral.glsl"                #menu: 着色器 > 开/关 KrigBilateral
  CTRL+8            change-list glsl-shaders toggle "~~/shaders/nnedi3-nns128-win8x4.glsl"         #menu: 着色器 > 开/关 NNEDI3_128
  CTRL+9            change-list glsl-shaders toggle "~~/shaders/ravu-zoom-r4.glsl"                 #menu: 着色器 > 开/关 ravu-zoom-r4

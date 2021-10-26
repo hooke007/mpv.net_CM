@@ -4,11 +4,10 @@ name    = vo
 file    = mpv
 default = gpu
 filter  = 基础
-help    = 视频输出驱动程序\nvo_placebo被预定为vo_gpu的继任者但尚未完成开发，选择此项前须确认所使用的libmpv已包含
-url     = https://github.com/mpv-player/mpv/pull/8799
+help    = 视频输出驱动程序
 
 option  = gpu                 通用且具有高度可定制化与扩展性的GPU加速视频输出驱动
-option  = placebo             Currently, this only supports --gpu-api=vulkan, and no hardware decoding. Unlike --vo=gpu, the FBO formats are not tunable, but you can still set --gpu-dumb-mode=yes to forcibly disable their use.
+option  = gpu-next            vo_gpu-next被预定为vo_gpu的继任者但尚未完成开发（只支持--gpu-api=vulkan），选择此项前须确认所使用的libmpv已包含。（实验性）
 
 [setting]
 name    = gpu-api
@@ -249,7 +248,7 @@ help    = 启动音量，默认：70，建议：100
 name    = volume-max
 file    = mpv
 filter  = 音频
-help    = <100.0-1000.0> 可调节的最大音量，默认：130\nmpv的音量并不遵循线性关系，130约为100的两倍响度
+help    = <100.0-1000.0> 可调节的最大音量，默认：130\nmpv的音量值并非线性递增，130的响度约为100两倍
 
 [setting]
 name    = audio-file-auto
@@ -387,6 +386,7 @@ help    = 时间插值算法，启用前须使用--interpolation=yes
 
 option  = bicubic             最平滑（糊）
 option  = mitchell            综合下平衡的选择
+option  = sphinx
 option  = oversample          最清晰（卡），类SmoothMotion
 
 [setting]
@@ -644,12 +644,25 @@ option  = yes
 option  = no
 
 [setting]
+name    = sub-ass-vsfilter-color-compat
+file    = mpv
+default = basic
+filter  = 字幕
+help    = 字幕色彩处理（模仿vsfilter）
+url     = https://mpv.io/manual/master/#options-sub-ass-vsfilter-color-compat
+
+option  = basic
+option  = full
+option  = force-601
+option  = no
+
+[setting]
 name    = screenshot-template
 file    = mpv
 filter  = 截图
 type    = string
 width   = 500
-help    = 截图保存模板，在模板中写入路径，否则将保存在程序目录\n推荐：~~desktop/MPV-%P-N%n
+help    = 截图保存模板，在模板中写入路径，否则将保存在桌面\n推荐：~~desktop/MPV-%P-N%n
 url     = https://mpv.io/manual/master/#options-screenshot-template
 
 [setting]
@@ -807,7 +820,7 @@ name    = builtin-scalers
 file    = mpv
 default = yes
 filter  = placebo
-help    = Allow using faster built-in replacements for common scalers such as nearest, bilinear or bicubic. These have the disadvantage of not being configurable, unlike normal scaler kernels. Defaults to enabled.\n(This option only affects --vo=placebo)
+help    = Allow using faster built-in replacements for common scalers such as nearest, bilinear or bicubic. These have the disadvantage of not being configurable, unlike normal scaler kernels. Defaults to enabled.\n(This option only affects --vo=gpu-next)
 
 option  = yes
 option  = no
@@ -817,7 +830,7 @@ name    = interpolation-preserve
 file    = mpv
 default = yes
 filter  = placebo
-help    = Preserve the previous frames' interpolated results even when renderer parameters are changed - with the exception of options related to cropping and video placement, which always invalidate the cache. Enabling this option makes dynamic updates of renderer settings slightly smoother at the cost of slightly higher latency in response to such changes. Defaults to on.\n(Only affects --vo=placebo, note that -vo=gpu always invalidates interpolated frames)
+help    = Preserve the previous frames' interpolated results even when renderer parameters are changed - with the exception of options related to cropping and video placement, which always invalidate the cache. Enabling this option makes dynamic updates of renderer settings slightly smoother at the cost of slightly higher latency in response to such changes. Defaults to on.\n(Only affects --vo=gpu-next, note that -vo=gpu always invalidates interpolated frames)
 
 option  = yes
 option  = no
@@ -828,7 +841,7 @@ file    = mpv
 filter  = placebo
 type    = string
 width   = 500
-help    = Specifies a custom LUT file (in Adobe .cube format) to apply to the colors during image decoding. The exact interpretation of the LUT depends on the value of --image-lut-type.\n(Only for --vo=placebo)
+help    = Specifies a custom LUT file (in Adobe .cube format) to apply to the colors during image decoding. The exact interpretation of the LUT depends on the value of --image-lut-type.\n(Only for --vo=gpu-next)
 
 [setting]
 name    = image-lut-type
@@ -848,14 +861,14 @@ file    = mpv
 filter  = placebo
 type    = string
 width   = 500
-help    = Specifies a custom LUT file (in Adobe .cube format) to apply to the colors before display on-screen. This LUT is fed values in normalized RGB, after encoding into the target colorspace, so after the application of --target-trc.\n(Only for --vo=placebo)
+help    = Specifies a custom LUT file (in Adobe .cube format) to apply to the colors before display on-screen. This LUT is fed values in normalized RGB, after encoding into the target colorspace, so after the application of --target-trc.\n(Only for --vo=gpu-next)
 
 [setting]
 name    = allow-delayed-peak-detect
 file    = mpv
 default = yes
 filter  = placebo
-help    = When using --hdr-compute-peak, allow delaying the detected peak by a frame when beneficial for performance. In particular, this is required to avoid an unnecessary FBO indirection when no advanced rendering is required otherwise. Has no effect if there already is an indirect pass, such as when advanced scaling is enabled. Defaults to on.\n(Only affects --vo=placebo, note that --vo=gpu always delays the peak.)
+help    = When using --hdr-compute-peak, allow delaying the detected peak by a frame when beneficial for performance. In particular, this is required to avoid an unnecessary FBO indirection when no advanced rendering is required otherwise. Has no effect if there already is an indirect pass, such as when advanced scaling is enabled. Defaults to on.\n(Only affects --vo=gpu-next, note that --vo=gpu always delays the peak.)
 
 option  = yes
 option  = no
@@ -866,7 +879,7 @@ file    = mpv
 filter  = placebo
 type    = string
 width   = 500
-help    = Specifies a custom LUT (in Adobe .cube format) to apply to the colors as part of color conversion. The exact interpretation depends on the value of --lut-type.\n(Only for --vo=placebo)
+help    = Specifies a custom LUT (in Adobe .cube format) to apply to the colors as part of color conversion. The exact interpretation depends on the value of --lut-type.\n(Only for --vo=gpu-next)
 
 [setting]
 name    = lut-type
