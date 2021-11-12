@@ -7,7 +7,7 @@
     xmlns:mpvnet="clr-namespace:mpvnet"
     mc:Ignorable="d"
     
-    Title="mpv.net Setup"
+    Title="注册"
     FontSize="13"
     Foreground="{Binding Theme.Foreground}"
     Background="{Binding Theme.Background}"
@@ -54,18 +54,18 @@
                                TextAlignment="Center"
                                VerticalAlignment="Center"
                                FontSize="14"
-                               >Start Menu Shortcut</TextBlock>
+                               >开始菜单-快捷方式</TextBlock>
                 </Border>
                 <Button Name="AddStartMenuShortcut"
                         Height="30"
                         Margin="3"
                         Click="AddStartMenuShortcut_Click"
-                        >Add</Button>
+                        >创建</Button>
                 <Button Name="RemoveStartMenuShortcut"
                         Height="30"
                         Margin="3"
                         Click="RemoveStartMenuShortcut_Click"
-                        >Remove</Button>
+                        >移除</Button>
             </StackPanel>
             <StackPanel Width="140" Margin="20,5,5,25">
                 <Border Height="50">
@@ -73,37 +73,37 @@
                                TextAlignment="Center"
                                VerticalAlignment="Center"
                                FontSize="14"
-                               >File Extensions</TextBlock>
+                               >文件格式关联</TextBlock>
                 </Border>
                 <Button Name="AddVideo"
                         Height="30"
                         Margin="3"
                         Click="AddVideo_Click"
                         Template="{StaticResource ShieldButtonTemplate}"
-                        >Add Video</Button>
+                        >关联视频</Button>
                 <Button Name="AddAudio"
                         Height="30"
                         Margin="3"
                         Click="AddAudio_Click"
                         Template="{StaticResource ShieldButtonTemplate}"
-                        >Add Audio</Button>
+                        >关联音频</Button>
                 <Button Name="AddImage"
                         Height="30"
                         Margin="3"
                         Click="AddImage_Click"
                         Template="{StaticResource ShieldButtonTemplate}"
-                        >Add Image</Button>
+                        >关联图片</Button>
                 <Button Name="RemoveFileAssociations"
                         Margin="3,15,3,3"
                         Height="30"
                         Click="RemoveFileAssociations_Click"
                         Template="{StaticResource ShieldButtonTemplate}"
-                        >Remove All</Button>
+                        >移除全部关联</Button>
                 <Button Name="EditDefaultApp"
                         Height="30"
                         Margin="3"
                         Click="EditDefaultApp_Click"
-                        >Edit Default App</Button>
+                        >编辑默认应用</Button>
             </StackPanel>
             <StackPanel Width="140" Margin="20,5,25,5">
                 <Border Height="50">
@@ -111,23 +111,23 @@
                                TextAlignment="Center"
                                VerticalAlignment="Center"
                                FontSize="14"
-                               >Path Environment Variable</TextBlock>
+                               >环境变量-PATH</TextBlock>
                 </Border>
                 <Button Name="AddToPathEnvVar"
                         Height="30"
                         Margin="3"
                         Click="AddToPathEnvVar_Click"
-                        >Add</Button>
+                        >创建</Button>
                 <Button Name="RemoveFromPathEnvVar"
                         Height="30"
                         Margin="3"
                         Click="RemoveFromPathEnvVar_Click"
-                        >Remove</Button>
+                        >移除</Button>
                 <Button Name="ShowEnvVarEditor"
                         Height="30"
                         Margin="3"
                         Click="ShowEnvVarEditor_Click"
-                        >Show Editor</Button>
+                        >控制面板-环境变量</Button>
             </StackPanel>
         </StackPanel>
     </Grid>

@@ -50,9 +50,9 @@ namespace mpvnet
                     proc.WaitForExit();
 
                     if (proc.ExitCode == 0)
-                        Msg.ShowInfo("File associations successfully created.");
+                        Msg.ShowInfo("关联成功！");
                     else
-                        Msg.ShowError("Error creating file associations.");
+                        Msg.ShowError("关联失败！");
                 }
             } catch {}
         }

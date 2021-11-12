@@ -6,7 +6,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     mc:Ignorable="d"
-    
+
+    FontFamily="微软雅黑"
     FontSize="13"
     Loaded="OnLoaded"
     Background="#111111"
@@ -39,7 +40,7 @@
                     >
                 
                 <local:SearchTextBoxUserControl
-                    HintText="Search"
+                    HintText="搜索"
                     x:Name="SearchControl"
                     Grid.ColumnSpan="2"
                     Padding="1,1,1,0"
