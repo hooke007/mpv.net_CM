@@ -7,17 +7,17 @@ filter  = 基础
 help    = 视频输出驱动程序
 
 option  = gpu                 通用且具有高度可定制化与扩展性的GPU加速视频输出驱动
-option  = gpu-next            实验性的基于libplacebo的渲染器（当前限制--gpu-api=vulkan且暂不支持原生硬解）
+option  = gpu-next            实验性的基于libplacebo的渲染器（尚未支持--gpu-api=d3d11）
 
 [setting]
-name    = gpu-api
+name    = gpu-context
 file    = mpv
 default = d3d11
 filter  = 基础
-help    = 图形API
 
-option  = d3d11
-option  = vulkan
+option  = win                 此时--gpu-api=opengl
+option  = d3d11               此时--gpu-api=d3d11
+option  = winvk               此时--gpu-api=vulkan
 
 [setting]
 name    = hwdec
