@@ -57,7 +57,7 @@ namespace MsgBoxEx
 
         public static MsgBoxExCheckBoxData CheckBoxData { get; set; } = null;
 
-        public static FontFamily MsgFontFamily { get; set; } = new FontFamily("Segoe UI");
+        public static FontFamily MsgFontFamily { get; set; } = new FontFamily("微软雅黑");
 
         public static double MsgFontSize { get; set; } = 12;
 
@@ -172,7 +172,7 @@ namespace MsgBoxEx
         public static void ResetToDefaults()
         {
             MsgFontSize = 12d;
-            MsgFontFamily = new System.Windows.Media.FontFamily("Segoe UI");
+            MsgFontFamily = new System.Windows.Media.FontFamily("微软雅黑");
             DelegateObj = null;
             DetailsText = null;
             MessageForeground = null;

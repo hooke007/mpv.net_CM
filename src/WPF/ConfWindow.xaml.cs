@@ -109,7 +109,7 @@ namespace mpvnet
             App.UpdateWpfColors();
 
             if (ThemeConf != GetThemeConf())
-                MessageBox.Show("Changed theme settings require mpv.net being restarted.", "Info");
+                MessageBox.Show("重启程序使更改后的主题完全生效！", "Info");
         }
 
         string GetCompareString()
