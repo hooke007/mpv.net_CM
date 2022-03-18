@@ -43,7 +43,7 @@ mpvnet的 **libmpv内核** 可自行独立更新（替换文件目录中的 **mp
 ## 下载
 
 - 网页端右侧 [**Releases**](https://github.com/hooke007/mpv.net_CM/releases)
-- 我的主页 [**网盘备份**](https://hooke007.github.io/#%E7%BD%91%E7%9B%98%E5%A4%87%E4%BB%BD) 
+- 我的主页 [**网盘备份**](https://hooke007.github.io/index2#%E7%BD%91%E7%9B%98%E5%A4%87%E4%BB%BD) 
 
 ## 反馈
 
@@ -81,7 +81,7 @@ mpvnet的 **libmpv内核** 可自行独立更新（替换文件目录中的 **mp
 
 mpv.net拥有一个可自定义的右键菜单，只需简单修改 input.conf 文件即可。
 
-与原版mpv的快捷键自定义相似，结构为 “键位   参数   #注释” （原版mpv的快捷键修改参考 [此处](https://hooke007.github.io/#系列手册) 手册05）  
+与原版mpv的快捷键自定义相似，结构为 “键位   参数   #注释” （原版mpv的快捷键修改参考 [此处](https://hooke007.github.io/index2#系列手册) 手册05）  
 不同的是：1.这里的注释部分遵循简单语法就可以映射成菜单中的对应选项。2.映射到菜单的参数可以不绑键位
 
 举例：
