@@ -37,7 +37,7 @@ namespace mpvnet
                             opt.Name = i.Value;
 
                         if (opt.Name == optionSetting.Default)
-                            opt.Text = opt.Name + " (Default)";
+                            opt.Text = opt.Name + "（默认）";
 
                         opt.OptionSetting = optionSetting;
                         optionSetting.Options.Add(opt);

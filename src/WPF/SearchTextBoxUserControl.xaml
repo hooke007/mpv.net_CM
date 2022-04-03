@@ -38,7 +38,7 @@
             Name="SearchClearButton"
             Background="Transparent"
             HorizontalAlignment="Right"
-            FontFamily="Marlett"
+            FontFamily="微软雅黑"
             FontSize="10"
             Width="17"
             Height="17"

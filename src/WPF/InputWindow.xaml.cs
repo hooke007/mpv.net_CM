@@ -40,12 +40,12 @@ namespace mpvnet
             {
                 SearchControl.SearchTextBox.Text = "";
 
-                Msg.ShowInfo("Filtering" + BR2 +
-                    "Reduce the filter scope with:" + BR2 +
-                    "i input" + BR2 +
-                    "m menu" + BR2 +
-                    "c command" + BR2 +
-                    "If only one character is entered input search is performed.");
+                Msg.ShowInfo("搜索过滤" + BR2 +
+                    "可使用以下前缀缩小索引范围" + BR2 +
+                    "i: 仅索引快捷键" + BR2 +
+                    "m: 仅索引右键菜单项目" + BR2 +
+                    "c: 仅索引命令" + BR2 +
+                    "如果只输入一个字符，则直接执行搜索。");
             }
         }
 
@@ -143,7 +143,7 @@ namespace mpvnet
                 return;
 
             File.WriteAllText(Core.InputConfPath, GetInputConfContent());
-            Msg.ShowInfo("Changes will be available on next startup.");
+            Msg.ShowInfo("重启程序使所做更改生效！");
         }
 
         void DataGrid_PreviewCanExecute(object sender, CanExecuteRoutedEventArgs e)
