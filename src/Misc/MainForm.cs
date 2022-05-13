@@ -222,7 +222,7 @@ namespace mpvnet
             if (FormBorderStyle == FormBorderStyle.None)
                 top = ClientSize.Height * 0.1f;
 
-            return pos.Y > ClientSize.Height * 0.85 || pos.Y < top;
+            return pos.Y > ClientSize.Height * 0.80 || pos.Y < top;
         }
 
         void UpdateMenu()

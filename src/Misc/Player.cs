@@ -133,13 +133,14 @@ namespace mpvnet
             SetPropertyBool("input-default-bindings", true);
             SetPropertyBool("input-builtin-bindings", false);
 
-            SetPropertyString("watch-later-options", "mute");
+            SetPropertyString("watch-later-options", "vid,aid,sid");
             SetPropertyString("screenshot-directory", "~~desktop/");
             SetPropertyString("osd-playing-msg", "${filename}");
             SetPropertyString("osc", "yes");
             SetPropertyString("force-window", "yes");
             SetPropertyString("config-dir", ConfigFolder);
             SetPropertyString("config", "yes");
+            SetPropertyString("include", "~~/profiles.conf");
 
             ProcessCommandLine(true);
             mpv_error err = mpv_initialize(Handle);
