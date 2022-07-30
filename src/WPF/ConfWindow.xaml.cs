@@ -101,7 +101,7 @@ namespace mpvnet
             App.UpdateWpfColors();
 
             if (ThemeConf != GetThemeConf())
-                MessageBox.Show("Changed theme settings require mpv.net being restarted.", "Info");
+                MessageBox.Show("重启程序使更改后的主题完全生效！", "Info");
         }
 
         string GetCompareString()
@@ -317,6 +317,9 @@ namespace mpvnet
             if (e.AddedItems.Count > 0)
                 SearchControl.Text = e.AddedItems[0] + ":";
         }
+
+        void OpenSettingsTextBlock_MouseUp(object sender, MouseButtonEventArgs e) =>
+            ProcessHelp.ShellExecute(Path.GetDirectoryName(Core.ConfPath));
 
         void PreviewTextBlock_MouseUp(object sender, MouseButtonEventArgs e) => Msg.ShowInfo(GetContent("mpv"));
 
