@@ -158,8 +158,8 @@ namespace mpvnet
                 ProcessHelp.ShellExecute(Core.ConfigFolder + "history.txt");
             else
             {
-                if (Msg.ShowQuestion("Create a 'history.txt' file in the config folder?" + BR2 +
-                    "mpv.net will write the date, time, play length and path of watched files to it.") == MessageBoxResult.OK)
+                if (Msg.ShowQuestion("是否在设置文件夹中创建history.txt？" + BR2 +
+                    "mpv.net将写入当前文件的日期、时间、播放时间和路径") == MessageBoxResult.OK)
 
                     File.WriteAllText(Core.ConfigFolder + "history.txt", "");
             }
@@ -248,7 +248,7 @@ namespace mpvnet
 
                 if (files.Count == 0)
                 {
-                    App.ShowError("The clipboard does not contain a valid URL or file.");
+                    App.ShowError("剪贴板中不包含有效的链接或文件！");
                     return;
                 }
 
@@ -441,7 +441,7 @@ namespace mpvnet
             {
                 MsgBoxEx.MessageBoxEx.MsgFontFamily = new FontFamily("Consolas");
                 Msg.ShowInfo(text);
-                MsgBoxEx.MessageBoxEx.MsgFontFamily = new FontFamily("Segoe UI");
+                MsgBoxEx.MessageBoxEx.MsgFontFamily = new FontFamily("微软雅黑");
             }
         });
 
@@ -650,11 +650,11 @@ namespace mpvnet
                     proc.WaitForExit();
 
                     if (proc.ExitCode == 0)
-                        Msg.ShowInfo("File associations were successfully " + 
-                            (perceivedType == "unreg" ? "removed" : "created") +
-                            ".\n\nFile Explorer icons will refresh after process restart.");
+                        Msg.ShowInfo("文件关联已成功" + 
+                            (perceivedType == "注销" ? "移除" : "创建") +
+                            "！\n\n资源管理器的相关图标将在进程重启后刷新");
                     else
-                        Msg.ShowError("Error creating file associations.");
+                        Msg.ShowError("关联出错！");
                 }
             } catch { }
         }
